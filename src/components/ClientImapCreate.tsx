@@ -90,63 +90,83 @@ const ClientImapCreate = ({
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-3">
             {fields.map((item, i) => (
-              <FormField
-                control={form.control}
-                name={`imaps.${i}.imapId`}
-                key={item.id}
-                render={({ field }) => (
-                  <div className="flex gap-3 w-full">
-                    <FormItem className="flex-1">
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+              <React.Fragment key={i}>
+                <FormField
+                  control={form.control}
+                  name={`imaps.${i}.imapId`}
+                  key={item.id}
+                  render={({ field }) => (
+                    <div className="flex gap-3 w-full">
+                      <FormItem className="flex-1">
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl className="w-full flex">
+                            <SelectTrigger className="w-full flex-1">
+                              <SelectValue placeholder="Search Imap" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent onClick={(e) => e.stopPropagation()}>
+                            <Input
+                              className="mb-2"
+                              placeholder="Search"
+                              defaultValue={search}
+                              onChange={onChange}
+                            />
+                            {!isLoading &&
+                              data?.data.map((item, i) => (
+                                <SelectItem
+                                  key={i}
+                                  value={item.id}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                  }}
+                                >
+                                  {item.user}
+                                </SelectItem>
+                              ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                      <Button
+                        type="button"
+                        onClick={() => remove(fields.length - 1)}
+                        size={"icon"}
+                        variant={"destructive"}
                       >
-                        <FormControl className="w-full flex">
-                          <SelectTrigger className="w-full flex-1">
-                            <SelectValue placeholder="Search Imap" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent onClick={(e) => e.stopPropagation()}>
-                          <Input
-                            className="mb-2"
-                            placeholder="Search"
-                            defaultValue={search}
-                            onChange={onChange}
-                          />
-                          {!isLoading &&
-                            data?.data.map((item, i) => (
-                              <SelectItem
-                                key={i}
-                                value={item.id}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                }}
-                              >
-                                {item.user}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
+                        <Trash2Icon />
+                      </Button>
+                    </div>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`imaps.${i}.expiredTime`}
+                  key={item.id}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormControl className="w-full flex">
+                        <Input
+                          className="w-full"
+                          type={"date"}
+                          placeholder="Expired Time"
+                          {...field}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
-                    <Button
-                      type="button"
-                      onClick={() => remove(fields.length - 1)}
-                      size={"icon"}
-                      variant={"destructive"}
-                    >
-                      <Trash2Icon />
-                    </Button>
-                  </div>
-                )}
-              />
+                  )}
+                />
+              </React.Fragment>
             ))}
 
             <div className="flex w-full gap-3 place-items-center">
               <div className=" h-10 w-full bg-muted rounded"></div>
               <Button
                 type="button"
-                onClick={() => append({ imapId: "" })}
+                onClick={() => append({ imapId: "", expiredTime: "" })}
                 size={"icon"}
                 variant={"outline"}
               >

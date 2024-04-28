@@ -33,35 +33,21 @@ const clientFindMany = async ({
 
 const clientCreate = async (
   payloadA: z.infer<typeof createSchema>,
-  payloadB?: string[]
 ) => {
   const { success } = createSchema.safeParse(payloadA);
   if (!success) throw new ApiError(405, "BAD_REQUEST");
   const { password, imaps, ...others } = payloadA;
   const hash = await bcrypt.hash(password, 10);
   const data = await clientRepo.create({ ...others, hash });
-  if (payloadB) {
-    const imaps = payloadB.map((val) => {
-      return { imapId: val, clientId: data.id };
-    });
-    await clientImapRepo.createMany(imaps);
-  }
 };
 
 const clientUpdate = async (
   id: string,
   payloadA: z.infer<typeof updateSchema>,
-  payloadB?: string[]
 ) => {
   const { success } = updateSchema.safeParse(payloadA);
   if (!success) throw new ApiError(405, "BAD_REQUEST");
   const data = await clientRepo.update(id, payloadA);
-  if (payloadB) {
-    const imaps = payloadB.map((val) => {
-      return { imapId: val, clientId: data.id };
-    });
-    await clientImapRepo.createMany(imaps);
-  }
 };
 
 const clientRemove = async (id: string) => {

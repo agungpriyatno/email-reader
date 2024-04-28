@@ -25,18 +25,22 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  PlusIcon
+  Edit2Icon,
+  PlusIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { ClientImapCreate } from "./ClientImapCreate";
 import { ClientImapDelete } from "./ClientImapDelete";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { ClientImapUpdate } from "./ClientImapUpdate";
+
+type TImap = Imap & { expiredTime: Date };
 
 type ClientImapTableProps = {
   id: string;
   initial: {
-    data: Imap[];
+    data: TImap[];
     currentPage: number;
     totalPage: number;
   };
@@ -56,7 +60,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
   };
 
   const { data, refetch, isLoading, isError } = useQuery<{
-    data: Imap[];
+    data: TImap[];
     currentPage: number;
     totalPage: number;
   }>({
@@ -76,8 +80,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
     if (action === "previous") setPage(page - 1);
     if (action === "first") setPage(page + 1);
     if (action === "last") setPage(data.totalPage);
-
-    refetch()
+    refetch();
   };
 
   return (
@@ -103,6 +106,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
             <TableRow>
               <TableHead className="w-[100px]">No</TableHead>
               <TableHead>User</TableHead>
+              <TableHead>ExpiredAt</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -112,8 +116,18 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
                 <TableRow key={item.id}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>{item.user}</TableCell>
-                   <TableCell className=" flex space-x-3">
-                    <ClientImapDelete clientId={id} imapId={item.id} onActionSuccess={refetch} />
+                  <TableCell>{item.expiredTime.toDateString()}</TableCell>
+                  <TableCell className=" flex space-x-3 gap-2">
+                    <ClientImapUpdate imapId={item.id} clientId={id} data={item.expiredTime} onActionSuccess={refetch}>
+                      <Button size={"icon"}>
+                        <Edit2Icon />
+                      </Button>
+                    </ClientImapUpdate>
+                    <ClientImapDelete
+                      clientId={id}
+                      imapId={item.id}
+                      onActionSuccess={refetch}
+                    />
                   </TableCell>
                 </TableRow>
               );

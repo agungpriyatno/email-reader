@@ -1,17 +1,12 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+"use client"
+
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter()
+  router.push("/signin")
   return (
     <main className="h-screen w-full relative">
-      <section className=" absolute left-0 top-0 w-full h-full z-10">
-        <div className="h-full w-full flex flex-col justify-center place-items-center space-y-3">
-          <h1 className=" text-3xl font-bold">NAMA USAHA LU</h1>
-          <Button asChild>
-            <Link href={"/signin"}>MASUK</Link>
-          </Button>
-        </div>
-      </section>
     </main>
   );
 }

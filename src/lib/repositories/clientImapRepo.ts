@@ -35,16 +35,42 @@ const findMany = (
       AND: [
         { clientId: id },
         {
-          OR: [
-            { imap: { user: { contains: search } } },
-          ],
+          OR: [{ imap: { user: { contains: search } } }],
         },
       ],
     },
   });
 };
 
+const findManyExpired = (
+  id: string,
+  {
+    take,
+    skip,
+    search,
+  }: {
+    take: number;
+    skip: number;
+    search: string;
+  }
+) => {
+  const today = new Date();
+  return db.clientImap.findMany({
+    take,
+    skip,
+    include: { imap: true },
+    where: {
+      AND: [
+        { clientId: id, expiredTime: { gte: today } },
+        {
+          OR: [{ imap: { user: { contains: search } } }],
+        },
+      ],
+    },
+  });
+};
 const clientImapRepo = {
+  findManyExpired,
   createMany,
   findMany,
   remove,

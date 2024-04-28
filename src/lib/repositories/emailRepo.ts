@@ -13,6 +13,22 @@ type Message = Omit<FetchMessageObject, "source"> & {
   };
 };
 
+const whitelist = [
+  "A PIN for profile",
+  "Reset your password ",
+  "Atur ulang sandi",
+  "Selesaikan permintaanmu untuk mengatur ulang sandi",
+  "Complete your password reset request",
+  "Kode akses sementaramu",
+  "Your temporary access code",
+  "Your Netflix temporary access code",
+  "Kode akses sementara Netflix-mu",
+  "Perlindungan PIN telah ditambahkan ke profil berikut",
+  "PIN protection has been added to the following profile",
+  "Perangkat baru menggunakan akunmu",
+  "A new device is using your account",
+];
+
 const emailFindMany = async (to?: string) => {
   const messages: Message[] = [];
   const client = new ImapFlow({
@@ -35,7 +51,7 @@ const emailFindMany = async (to?: string) => {
         all: true,
         to,
         from: "info@account.netflix.com",
-        subject: "A PIN for profile"
+        // subject: "A PIN for profile"
         // seen: false,
       },
       {
@@ -48,9 +64,14 @@ const emailFindMany = async (to?: string) => {
     );
 
     for await (let message of fetcher) {
-      const { source, ...other } = message;
-      const parsed = await parseEmail(source);
-      messages.push({ ...other, parsed });
+      const found = whitelist.find((item) =>
+        message.envelope.subject.includes(item)
+      );
+      if (found) {
+        const { source, ...other } = message;
+        const parsed = await parseEmail(source);
+        messages.push({ ...other, parsed });
+      }
     }
   } catch (error) {
     console.log(error);

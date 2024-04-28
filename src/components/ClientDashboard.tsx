@@ -35,6 +35,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import Link from "next/link";
 
+type TImap = Imap & {expiredTime: Date}
+
 const ClientDashboard = () => {
   const [take, setTake] = useState(15);
   const [page, setPage] = useState(1);
@@ -51,7 +53,7 @@ const ClientDashboard = () => {
   };
 
   const { data, refetch, isFetching, isError, error } = useQuery<{
-    data: Imap[];
+    data: TImap[];
     currentPage: number;
     totalPage: number;
   }>({
@@ -79,9 +81,6 @@ const ClientDashboard = () => {
     refetch();
   };
 
-  if (isFetching) {
-    return <TableLoading />;
-  }
 
   if (isError) {
     if (error instanceof ApiError) {
@@ -109,6 +108,7 @@ const ClientDashboard = () => {
             <TableRow>
               <TableHead className="w-[100px]">No</TableHead>
               <TableHead>User</TableHead>
+              <TableHead>ExpiredAt</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -118,6 +118,7 @@ const ClientDashboard = () => {
                 <TableRow key={item.id}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>{item.user}</TableCell>
+                  <TableCell>{item.expiredTime.toDateString()}</TableCell>
                    <TableCell className=" flex space-x-3">
                     <Button asChild size={"icon"}>
                       <Link href={`/dashboard/${item.id}`}>
