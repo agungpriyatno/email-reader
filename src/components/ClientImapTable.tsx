@@ -112,7 +112,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
                 <TableRow key={item.id}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>{item.user}</TableCell>
-                  <TableCell className=" space-x-3">
+                   <TableCell className=" flex space-x-3">
                     <ClientImapDelete clientId={id} imapId={item.id} onActionSuccess={refetch} />
                   </TableCell>
                 </TableRow>

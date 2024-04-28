@@ -18,7 +18,7 @@ import { FetchMessageObject } from "imapflow";
 import { EyeIcon } from "lucide-react";
 import { TableLoading } from "./TableLoading";
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
 
 type Message = Omit<FetchMessageObject, "source"> & {
   parsed?: {
@@ -59,9 +59,8 @@ const InboxTable = ({ imap }: InboxTableProps) => {
             <TableRow>
               <TableHead className="w-[100px]">No</TableHead>
               <TableHead>To</TableHead>
-              <TableHead>From</TableHead>
-              <TableHead>Subject</TableHead>
-              <TableHead>Date</TableHead>
+              <TableHead className="w-[300px]">Subject</TableHead>
+              <TableHead className="w-20">Date</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -74,26 +73,28 @@ const InboxTable = ({ imap }: InboxTableProps) => {
                     <TableCell>
                       {item.envelope.to.map((item) => item.address).join(", ")}
                     </TableCell>
-                    <TableCell>
-                      {item.envelope.from
-                        .map((item) => item.address)
-                        .join(", ")}
-                    </TableCell>
                     <TableCell>{item.envelope.subject}</TableCell>
                     <TableCell>{item.envelope.date.toDateString()}</TableCell>
                     <TableCell>
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button size={"icon"}>
-                              <EyeIcon />
+                            <EyeIcon />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="p-0 h-screen overflow-y-auto max-w-xl">
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: item.parsed?.html as string,
-                            }}
-                          ></div>
+                        <DialogContent className="p-0 h-screen overflow-y-auto max-w-xl flex flex-col">
+                          <DialogClose asChild className=" absolute top-5 right-5 z-50">
+                            <Button type="button" variant="secondary">
+                              Close
+                            </Button>
+                          </DialogClose>
+                          <div className="flex-1">
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: item.parsed?.html as string,
+                              }}
+                            ></div>
+                          </div>
                         </DialogContent>
                       </Dialog>
                     </TableCell>

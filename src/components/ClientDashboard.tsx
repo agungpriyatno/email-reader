@@ -95,7 +95,7 @@ const ClientDashboard = () => {
   return (
     <Card>
       <CardHeader>
-        <div className="flex w-full justify-between place-items-center">
+        <div className="flex flex-col md:flex-row w-full justify-between md:place-items-center gap-3">
           <CardTitle>Email</CardTitle>
           <div className="flex gap-3">
             <Input placeholder="Search" onChange={onChange} />
@@ -118,7 +118,7 @@ const ClientDashboard = () => {
                 <TableRow key={item.id}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>{item.user}</TableCell>
-                  <TableCell className=" space-x-3">
+                   <TableCell className=" flex space-x-3">
                     <Button asChild size={"icon"}>
                       <Link href={`/dashboard/${item.id}`}>
                         <EyeIcon />

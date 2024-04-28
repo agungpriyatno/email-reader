@@ -13,7 +13,7 @@ const ClientHeader = () => {
       <ClientSidebarSheet />
       <AppBreadCrumb />
       <div className="relative ml-auto flex-1 md:grow-0">
-
+      <h1 className="font-bold text-base md:text-lg md:text-right">Mediaid Store</h1>
       </div>
       <ClientDropdownAvatar />
       <ModeToggle />

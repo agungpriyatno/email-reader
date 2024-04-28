@@ -8,12 +8,13 @@ import UserDropdownAvatar from "./UserDropDownAvatar";
 import UserSidebarSheet from "./UserSidbarSheet";
 
 const UserHeader = () => {
-  const pathname = usePathname();
+
   return (
     <header className="absolute top-0 left-0 right-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <UserSidebarSheet />
       <AppBreadCrumb />
-      <div className="relative ml-auto flex-1 md:grow-0">
+      <div className="relative ml-auto flex-1">
+        <h1 className="font-bold text-base md:text-lg md:text-right">Mediaid Store</h1>
         {/* <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           type="search"

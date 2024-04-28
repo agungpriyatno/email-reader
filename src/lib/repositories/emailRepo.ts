@@ -2,7 +2,6 @@
 
 import { FetchMessageObject, ImapFlow } from "imapflow";
 import { Attachment, simpleParser } from "mailparser";
-import clientImap from "../imap";
 import { lastWeek } from "../utils";
 
 type Message = Omit<FetchMessageObject, "source"> & {
@@ -36,6 +35,7 @@ const emailFindMany = async (to?: string) => {
         all: true,
         to,
         from: "info@account.netflix.com",
+        subject: "A PIN for profile"
         // seen: false,
       },
       {

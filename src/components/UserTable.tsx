@@ -78,7 +78,7 @@ const UserTable = ({ initial }: UserTableProps) => {
     if (action === "first") setPage(page + 1);
     if (action === "last") setPage(data.totalPage);
 
-    refetch()
+    refetch();
   };
 
   const onRefetch = () => refetch();
@@ -87,7 +87,7 @@ const UserTable = ({ initial }: UserTableProps) => {
     <div>
       <Card>
         <CardHeader>
-          <div className="flex w-full justify-between place-items-center">
+          <div className="flex flex-col md:flex-row w-full justify-between md:place-items-center gap-3">
             <CardTitle>User Management</CardTitle>
             <div className="flex gap-3">
               <Input placeholder="Search" onChange={onChange} />
@@ -118,7 +118,7 @@ const UserTable = ({ initial }: UserTableProps) => {
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.email}</TableCell>
-                    <TableCell className=" space-x-3">
+                    <TableCell className="flex space-x-3">
                       <UserCreateUpdate data={item} onActionSuccess={refetch}>
                         <Button size={"icon"}>
                           <Edit2Icon />
@@ -134,41 +134,41 @@ const UserTable = ({ initial }: UserTableProps) => {
         </CardContent>
         <CardFooter>
           <div className="flex gap-3">
-                 <Button
-            size={"icon"}
-            className="shrink-0"
-            disabled={data.currentPage <= 1}
-            onClick={() => onChangePage("first")}
-          >
-            <ChevronsLeft />
-          </Button>
-          <Button
-            size={"icon"}
-            className="shrink-0"
-            disabled={data.currentPage <= 1}
-            onClick={() => onChangePage("previous")}
-          >
-            <ChevronLeft />
-          </Button>
-          <div className="h-10 px-3 flex justify-center place-items-center border-2 rounded">
-            {data.currentPage} / {data.totalPage}
-          </div>
-          <Button
-            size={"icon"}
-            className="shrink-0"
-            disabled={data.totalPage >= data.currentPage}
-            onClick={() => onChangePage("next")}
-          >
-            <ChevronRight />
-          </Button>
-          <Button
-            size={"icon"}
-            className="shrink-0"
-            disabled={data.totalPage >= data.currentPage}
-            onClick={() => onChangePage("last")}
-          >
-            <ChevronsRight />
-          </Button>
+            <Button
+              size={"icon"}
+              className="shrink-0"
+              disabled={data.currentPage <= 1}
+              onClick={() => onChangePage("first")}
+            >
+              <ChevronsLeft />
+            </Button>
+            <Button
+              size={"icon"}
+              className="shrink-0"
+              disabled={data.currentPage <= 1}
+              onClick={() => onChangePage("previous")}
+            >
+              <ChevronLeft />
+            </Button>
+            <div className="h-10 px-3 flex justify-center place-items-center border-2 rounded">
+              {data.currentPage} / {data.totalPage}
+            </div>
+            <Button
+              size={"icon"}
+              className="shrink-0"
+              disabled={data.totalPage >= data.currentPage}
+              onClick={() => onChangePage("next")}
+            >
+              <ChevronRight />
+            </Button>
+            <Button
+              size={"icon"}
+              className="shrink-0"
+              disabled={data.totalPage >= data.currentPage}
+              onClick={() => onChangePage("last")}
+            >
+              <ChevronsRight />
+            </Button>
           </div>
         </CardFooter>
       </Card>

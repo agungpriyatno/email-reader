@@ -96,9 +96,9 @@ const ImapTable = ({ initial }: ImapTableProps) => {
 
   return (
     <div>
-      <Card>
+     <Card>
         <CardHeader>
-          <div className="flex w-full justify-between place-items-center">
+          <div className="flex flex-col md:flex-row w-full justify-between md:place-items-center gap-3">
             <CardTitle>Imap Management</CardTitle>
             <div className="flex gap-3">
               <Input placeholder="Search" onChange={onChange} />
@@ -129,7 +129,7 @@ const ImapTable = ({ initial }: ImapTableProps) => {
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{item.user}</TableCell>
                     <TableCell>{item._count.clients}</TableCell>
-                    <TableCell className=" space-x-3">
+                     <TableCell className=" flex space-x-3">
                       <Button asChild size={"icon"}>
                         <Link href={`/backoffice/imaps/${item.id}`}>
                           <EyeIcon />
