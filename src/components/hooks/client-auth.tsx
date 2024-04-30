@@ -1,6 +1,10 @@
 "use client";
 
-import { clientSession, clientSignIn, clientSignUp } from "@/lib/actions/clientAuthAction";
+import {
+  clientSession,
+  clientSignIn,
+  clientSignUp,
+} from "@/lib/actions/clientAuthAction";
 import clientAuthSchema from "@/lib/schemas/clientAuthSchema";
 import clientSchema from "@/lib/schemas/clientSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -74,6 +78,7 @@ const useClientSignUp = () => {
 
 const useClientSession = () => {
   const accessToken = localStorage.getItem("user_session");
+  const router = useRouter();
   const fetcher = async () => {
     return await clientSession(accessToken ?? "");
   };
@@ -83,8 +88,11 @@ const useClientSession = () => {
     queryFn: fetcher,
   });
 
+  if (query.isError) {
+    router.push("/signin");
+  }
+
   return query;
 };
 
 export { useClientSession, useClientSignIn, useClientSignUp };
-
