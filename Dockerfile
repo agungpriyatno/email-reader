@@ -1,8 +1,9 @@
 FROM oven/bun
-
+WORKDIR /app
 
 COPY . .
 RUN bun install
+RUN bunx dotenv -e .env.production -- bunx prisma generate
 RUN bun run build
 
 

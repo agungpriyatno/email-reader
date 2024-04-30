@@ -15,7 +15,6 @@ import { emailFindMany } from "@/lib/repositories/emailRepo";
 import { Imap, Mail } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { EyeIcon } from "lucide-react";
-import { useState } from "react";
 import { TableLoading } from "./TableLoading";
 import { Button } from "./ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
