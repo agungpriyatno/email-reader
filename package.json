@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": " bunx dotenv -e .env.production -- prisma generate && next build",
+    "build": " dotenv -e .env.production -- prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "ui": "bunx shadcn-ui@latest",
-    "orm": "bunx dotenv -e .env.development -- prisma"
+    "ui": "shadcn-ui@latest",
+    "orm": "dotenv -e .env.development -- prisma"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
