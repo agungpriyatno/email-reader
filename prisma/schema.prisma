@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -57,11 +58,11 @@ model ClientImap {
 }
 
 model Mail {
-  id      String   @id
-  to      String   @unique
-  html    String
-  subject String
-  date    DateTime
+  id      String    @id
+  to      String?   @unique
+  html    String?
+  subject String?
+  date    DateTime?
 
   @@map("mails")
 }
