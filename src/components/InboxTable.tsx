@@ -12,21 +12,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { emailFindMany } from "@/lib/repositories/emailRepo";
-import { Imap } from "@prisma/client";
+import { Imap, Mail } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { FetchMessageObject } from "imapflow";
 import { EyeIcon } from "lucide-react";
+import { useState } from "react";
 import { TableLoading } from "./TableLoading";
 import { Button } from "./ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
 
-type Message = Omit<FetchMessageObject, "source"> & {
-  parsed?: {
-    subject: string | undefined;
-    text: string | undefined;
-    html: string | false;
-  };
-};
+type Message = {};
 
 type InboxTableProps = {
   imap?: Imap | null;
@@ -34,16 +28,19 @@ type InboxTableProps = {
 
 const InboxTable = ({ imap }: InboxTableProps) => {
   const fetcher = async () => {
-    return await emailFindMany(imap?.user);
+    const data = await emailFindMany(imap?.user);
+    console.log(data);
+    return data;
   };
 
-  const { data, refetch, isFetching, isError } = useQuery<Message[]>({
-    queryKey: ["clients"],
+  const { data, refetch, isFetching, isError } = useQuery<Mail[]>({
+    queryKey: ["inbox"],
     queryFn: fetcher,
+    refetchInterval: 10000,
     initialData: [],
   });
 
-  if (isFetching) {
+  if (isFetching && data.length == 0) {
     return <TableLoading />;
   }
 
@@ -68,13 +65,11 @@ const InboxTable = ({ imap }: InboxTableProps) => {
             {data != undefined &&
               data.map((item, i) => {
                 return (
-                  <TableRow key={item.uid}>
+                  <TableRow key={item.id}>
                     <TableCell>{i + 1}</TableCell>
-                    <TableCell>
-                      {item.envelope.to.map((item) => item.address).join(", ")}
-                    </TableCell>
-                    <TableCell>{item.envelope.subject}</TableCell>
-                    <TableCell>{item.envelope.date.toDateString()}</TableCell>
+                    <TableCell>{item.to}</TableCell>
+                    <TableCell>{item.subject}</TableCell>
+                    <TableCell>{item.date?.toDateString()}</TableCell>
                     <TableCell>
                       <Dialog>
                         <DialogTrigger asChild>
@@ -83,7 +78,10 @@ const InboxTable = ({ imap }: InboxTableProps) => {
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="p-0 h-screen overflow-y-auto max-w-xl flex flex-col">
-                          <DialogClose asChild className=" absolute top-5 right-5 z-50">
+                          <DialogClose
+                            asChild
+                            className=" absolute top-5 right-5 z-50"
+                          >
                             <Button type="button" variant="secondary">
                               Close
                             </Button>
@@ -91,7 +89,7 @@ const InboxTable = ({ imap }: InboxTableProps) => {
                           <div className="flex-1">
                             <div
                               dangerouslySetInnerHTML={{
-                                __html: item.parsed?.html as string,
+                                __html: item.html as string,
                               }}
                             ></div>
                           </div>

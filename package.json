@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "dotenv-cli": "^7.4.1",
+    "imap-simple": "^5.1.0",
     "imapflow": "^1.0.160",
     "jose": "^5.2.4",
     "lucide-react": "^0.375.0",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/imap-simple": "^4.2.9",
     "@types/imapflow": "^1.0.18",
     "@types/mailparser": "^3.4.4",
     "@types/node": "^20",

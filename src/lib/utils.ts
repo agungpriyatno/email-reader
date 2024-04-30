@@ -7,6 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export const lastWeek = () => {
   const date = new Date();
-  date.setDate(date.getDate() - 7);
+  date.setDate(date.getDate() - 2);
   return date;
 };

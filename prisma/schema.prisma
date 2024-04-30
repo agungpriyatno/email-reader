@@ -48,10 +48,20 @@ model Client {
 model ClientImap {
   clientId    String   @map("client_id")
   imapId      String   @map("imap_id")
-  expiredTime DateTime 
+  expiredTime DateTime
   client      Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
   imap        Imap     @relation(fields: [imapId], references: [id], onDelete: Cascade)
 
   @@id([clientId, imapId])
   @@map("client_imaps")
+}
+
+model Mail {
+  id      String   @id
+  to      String   @unique
+  html    String
+  subject String
+  date    DateTime
+
+  @@map("mails")
 }
