@@ -4,6 +4,7 @@ import { ApiError } from "next/dist/server/api-utils";
 import { z } from "zod";
 import imapRepo from "../repositories/imapRepo";
 import imapSchema from "../schemas/imapSchema";
+import { revalidatePath } from "next/cache";
 
 const createSchema = imapSchema.create;
 const updateSchema = imapSchema.update;
@@ -33,6 +34,7 @@ const imapCreate = async (payload: z.infer<typeof createSchema>) => {
   const { success } = createSchema.safeParse(payload);
   if (!success) throw new ApiError(405, "BAD_REQUEST");
   await imapRepo.create(payload);
+  revalidatePath("/backoffice/dashboard");
 };
 
 const imapUpdate = async (
@@ -46,6 +48,8 @@ const imapUpdate = async (
 
 const imapRemove = async (id: string) => {
   await imapRepo.remove(id);
+  revalidatePath("/backoffice/dashboard");
+  
 };
 
 export { imapCreate, imapFind, imapFindMany, imapRemove, imapUpdate };

@@ -5,6 +5,7 @@ import userSchema from "../schemas/userSchema";
 import { ApiError } from "next/dist/server/api-utils";
 import bcrypt from "../bcrypt";
 import userRepo from "../repositories/userRepo";
+import { revalidatePath } from "next/cache";
 
 const createSchema = userSchema.create;
 const updateSchema = userSchema.update;
@@ -36,6 +37,7 @@ const userCreate = async (payload: z.infer<typeof createSchema>) => {
   const { password, ...others } = payload;
   const hash = await bcrypt.hash(password, 10);
   await userRepo.create({ ...others, hash });
+  revalidatePath("/backoffice/dashboard");
 };
 
 const userUpdate = async (
@@ -49,6 +51,7 @@ const userUpdate = async (
 
 const userRemove = async (id: string) => {
   await userRepo.remove(id);
+  revalidatePath("/backoffice/dashboard");
 };
 
 export { userFind, userFindMany, userCreate, userUpdate, userRemove };
