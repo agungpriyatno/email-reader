@@ -75,7 +75,7 @@ const ClientDashboard = () => {
   const onChangePage = (action: "first" | "previous" | "next" | "last") => {
     if (action === "first") setPage(1);
     if (action === "previous") setPage(page - 1);
-    if (action === "first") setPage(page + 1);
+    if (action === "next") setPage(page + 1);
     if (action === "last") setPage(data.totalPage);
 
     refetch();

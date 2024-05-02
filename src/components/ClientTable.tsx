@@ -78,7 +78,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
   const onChangePage = (action: "first" | "previous" | "next" | "last") => {
     if (action === "first") setPage(1);
     if (action === "previous") setPage(page - 1);
-    if (action === "first") setPage(page + 1);
+    if (action === "next") setPage(page + 1);
     if (action === "last") setPage(data.totalPage);
 
     refetch()
@@ -86,6 +86,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
 
   return (
     <div>
+
      <Card>
         <CardHeader>
           <div className="flex flex-col md:flex-row w-full justify-between md:place-items-center gap-3">
@@ -162,7 +163,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
           <Button
             size={"icon"}
             className="shrink-0"
-            disabled={data.totalPage >= data.currentPage}
+            disabled={data.totalPage <= data.currentPage}
             onClick={() => onChangePage("next")}
           >
             <ChevronRight />
@@ -170,7 +171,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
           <Button
             size={"icon"}
             className="shrink-0"
-            disabled={data.totalPage >= data.currentPage}
+            disabled={data.totalPage <= data.currentPage}
             onClick={() => onChangePage("last")}
           >
             <ChevronsRight />

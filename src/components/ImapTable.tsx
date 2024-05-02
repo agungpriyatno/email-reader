@@ -53,7 +53,7 @@ type ImapTableProps = {
 
 const ImapTable = ({ initial }: ImapTableProps) => {
   const [take, setTake] = useState(15);
-  const [page, setPage] = useState(initial.currentPage);
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState<string>("");
   const router = useRouter();
   const fetcher = async () => {
@@ -69,7 +69,7 @@ const ImapTable = ({ initial }: ImapTableProps) => {
     currentPage: number;
     totalPage: number;
   }>({
-    queryKey: ["clients"],
+    queryKey: ["clients", page],
     queryFn: fetcher,
     refetchInterval: 5000,
     initialData: initial,
@@ -83,10 +83,11 @@ const ImapTable = ({ initial }: ImapTableProps) => {
   const onChangePage = (action: "first" | "previous" | "next" | "last") => {
     if (action === "first") setPage(1);
     if (action === "previous") setPage(page - 1);
-    if (action === "first") setPage(page + 1);
+    if (action === "next") setPage(page + 1);
     if (action === "last") setPage(data.totalPage);
 
     refetch();
+    window.scrollTo({top: 0})
   };
 
   const onSuccess = () => {
@@ -96,7 +97,9 @@ const ImapTable = ({ initial }: ImapTableProps) => {
 
   return (
     <div>
-     <Card>
+      {/* {data.currentPage} */}
+      {data.totalPage}
+      <Card>
         <CardHeader>
           <div className="flex flex-col md:flex-row w-full justify-between md:place-items-center gap-3">
             <CardTitle>Imap Management</CardTitle>
@@ -129,16 +132,12 @@ const ImapTable = ({ initial }: ImapTableProps) => {
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{item.user}</TableCell>
                     <TableCell>{item._count.clients}</TableCell>
-                     <TableCell className=" flex space-x-3">
+                    <TableCell className=" flex space-x-3">
                       <Button asChild size={"default"}>
-                        <Link href={`/backoffice/imaps/${item.id}`}>
-                          View
-                        </Link>
+                        <Link href={`/backoffice/imaps/${item.id}`}>View</Link>
                       </Button>
                       <ImapCreateUpdate data={item} onActionSuccess={refetch}>
-                        <Button size={"default"}>
-                          Edit
-                        </Button>
+                        <Button size={"default"}>Edit</Button>
                       </ImapCreateUpdate>
                       <ImapDelete id={item.id} onActionSuccess={refetch} />
                     </TableCell>
@@ -172,7 +171,7 @@ const ImapTable = ({ initial }: ImapTableProps) => {
             <Button
               size={"icon"}
               className="shrink-0"
-              disabled={data.totalPage >= data.currentPage}
+              disabled={data.totalPage <= data.currentPage}
               onClick={() => onChangePage("next")}
             >
               <ChevronRight />
@@ -180,7 +179,7 @@ const ImapTable = ({ initial }: ImapTableProps) => {
             <Button
               size={"icon"}
               className="shrink-0"
-              disabled={data.totalPage >= data.currentPage}
+              disabled={data.totalPage <= data.currentPage}
               onClick={() => onChangePage("last")}
             >
               <ChevronsRight />

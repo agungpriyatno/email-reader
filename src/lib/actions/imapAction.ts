@@ -23,6 +23,8 @@ const imapFindMany = async ({
   take: number;
   search: string;
 }) => {
+  console.log(page);
+  
   const skip = (page - 1) * take;
   const data = await imapRepo.findMany({ take, skip, search });
   const total = await imapRepo.count();
