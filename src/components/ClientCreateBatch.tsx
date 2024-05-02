@@ -1,14 +1,13 @@
 "use client";
 
-import { clientCreate, clientUpdate } from "@/lib/actions/clientAction";
-import clientSchema from "@/lib/schemas/clientSchema";
+import { createBatchEmail } from "@/lib/actions/generateAction";
+import { updateIdPassword } from "@/lib/schemas/updatePassword";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Client, Imap } from "@prisma/client";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Button, SubmitButton } from "./ui/button";
+import { SubmitButton } from "./ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 import {
   Form,
@@ -18,28 +17,20 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { Input, InputPassword } from "./ui/input";
-import imapSchema from "@/lib/schemas/imapSchema";
-import { imapCreate, imapUpdate } from "@/lib/actions/imapAction";
-import { ClientCreateBatch } from "./ClientCreateBatch";
+import { Textarea } from "./ui/textarea";
 
-type ImapCreateUpdateProps = {
+type ClientCreateBatchProps = {
   children?: React.ReactNode;
-  data?: Imap;
   onActionSuccess?: () => void;
 };
 
-const ImapCreateUpdate = ({
-  children,
-  data,
-  onActionSuccess,
-}: ImapCreateUpdateProps) => {
-  const createSchema = imapSchema.create;
+const ClientCreateBatch = ({  children, onActionSuccess }: ClientCreateBatchProps) => {
+  const createSchema = updateIdPassword;
   const [showModal, setModal] = useState(false);
   const form = useForm<z.infer<typeof createSchema>>({
     resolver: zodResolver(createSchema),
     defaultValues: {
-      user: data?.user ?? "",
+      password: "",
     },
   });
 
@@ -52,9 +43,8 @@ const ImapCreateUpdate = ({
 
   const onSubmit = handleSubmit(async (val) => {
     try {
-      if (data) await imapUpdate(data.id, val);
-      if (!data) await imapCreate(val);
-      if (!data) reset();
+      await createBatchEmail(val);
+      reset();
       setModal(false);
       toast("OK");
       onActionSuccess && onActionSuccess();
@@ -67,28 +57,23 @@ const ImapCreateUpdate = ({
     <Dialog open={showModal} onOpenChange={setModal}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-xl">
-        <DialogTitle>
-          {data != undefined ? "Edit Client" : "New Client"}
-        </DialogTitle>
+        <DialogTitle>Create Batch</DialogTitle>
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-3">
             <FormField
               control={control}
-              name="user"
+              name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>User</FormLabel>
+                  <FormLabel>Batch Email</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Textarea rows={15} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <SubmitButton submitting={isSubmitting}>
-              {data != undefined ? "Edit" : "Add"}
-            </SubmitButton>
-         
+            <SubmitButton submitting={isSubmitting}>Create</SubmitButton>
           </form>
         </Form>
       </DialogContent>
@@ -96,4 +81,4 @@ const ImapCreateUpdate = ({
   );
 };
 
-export { ImapCreateUpdate };
+export { ClientCreateBatch };

@@ -25,13 +25,12 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  Edit2Icon,
-  EyeIcon,
-  PlusIcon,
+  PlusIcon
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ClientCreateBatch } from "./ClientCreateBatch";
 import { ImapCreateUpdate } from "./ImapCreateUpdate";
 import { ImapDelete } from "./ImapDelete";
 import { Button } from "./ui/button";
@@ -97,8 +96,6 @@ const ImapTable = ({ initial }: ImapTableProps) => {
 
   return (
     <div>
-      {/* {data.currentPage} */}
-      {data.totalPage}
       <Card>
         <CardHeader>
           <div className="flex flex-col md:flex-row w-full justify-between md:place-items-center gap-3">
@@ -110,6 +107,9 @@ const ImapTable = ({ initial }: ImapTableProps) => {
                   <PlusIcon />
                 </Button>
               </ImapCreateUpdate>
+              <ClientCreateBatch>
+              <Button>Batch</Button>
+            </ClientCreateBatch>
             </div>
           </div>
         </CardHeader>

@@ -1,10 +1,12 @@
 import { ConnectionPannel } from "@/components/ConnectionPannel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { generateEmail } from "@/lib/actions/generateAction";
 import clientRepo from "@/lib/repositories/clientRepo";
 import imapRepo from "@/lib/repositories/imapRepo";
 import userRepo from "@/lib/repositories/userRepo";
 
 const UserDashboardPage = async () => {
+  // await generateEmail()
   const users = await userRepo.count();
   const clients = await clientRepo.count();
   const imaps = await imapRepo.count();
