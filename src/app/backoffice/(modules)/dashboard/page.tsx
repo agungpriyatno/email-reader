@@ -9,7 +9,7 @@ const UserDashboardPage = async () => {
   const clients = await clientRepo.count();
   const imaps = await imapRepo.count();
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="w-full h-full space-y-4 border-2 rounded">
         <ConnectionPannel />
       </div>
