@@ -2,8 +2,12 @@ import "only-server";
 import { createClient } from "redis";
 
 const redis = createClient({
-    username: "",
-    password: "",
+  username: "", // use your Redis user. More info https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
+  password: "", // use your password here
+  socket: {
+    host: "redis-stack",
+    port: 6379,
+  },
 });
 
 redis.on("error", (err) => {
