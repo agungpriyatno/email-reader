@@ -120,8 +120,8 @@ const UserTable = ({ initial }: UserTableProps) => {
                     <TableCell>{item.email}</TableCell>
                     <TableCell className="flex space-x-3">
                       <UserCreateUpdate data={item} onActionSuccess={refetch}>
-                        <Button size={"icon"}>
-                          <Edit2Icon />
+                        <Button size={"default"}>
+                          Edit
                         </Button>
                       </UserCreateUpdate>
                       <UserDelete id={item.id} onActionSuccess={refetch} />

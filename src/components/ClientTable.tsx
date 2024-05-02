@@ -120,14 +120,14 @@ const ClientTable = ({ initial }: ClientTableProps) => {
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.email}</TableCell>
                      <TableCell className=" flex space-x-3">
-                      <Button asChild size={"icon"}>
+                      <Button asChild size={"default"}>
                         <Link href={`/backoffice/clients/${item.id}`}>
-                          <EyeIcon />
+                          View
                         </Link>
                       </Button>
                       <ClientCreateUpdate data={item} onActionSuccess={refetch}>
-                        <Button size={"icon"}>
-                          <Edit2Icon />
+                        <Button size={"default"}>
+                          Edit
                         </Button>
                       </ClientCreateUpdate>
                       <ClientDelete id={item.id} onActionSuccess={refetch} />

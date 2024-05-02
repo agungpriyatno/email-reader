@@ -136,7 +136,7 @@ const ClientImapCreate = ({
                         size={"icon"}
                         variant={"destructive"}
                       >
-                        <Trash2Icon />
+                        Hapus
                       </Button>
                     </div>
                   )}

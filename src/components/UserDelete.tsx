@@ -34,8 +34,8 @@ const UserDelete = ({ id, onActionSuccess }: UserDeleteProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"destructive"} size={"icon"}>
-          <Trash2Icon />
+        <Button variant={"destructive"} size={"default"}>
+          Hapus
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

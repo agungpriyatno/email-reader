@@ -122,7 +122,7 @@ const ClientDashboard = () => {
                    <TableCell className=" flex space-x-3">
                     <Button asChild size={"icon"}>
                       <Link href={`/dashboard/${item.id}`}>
-                        <EyeIcon />
+                        View
                       </Link>
                     </Button>
                   </TableCell>

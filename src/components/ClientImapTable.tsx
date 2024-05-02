@@ -120,7 +120,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
                   <TableCell className=" flex space-x-3 gap-2">
                     <ClientImapUpdate imapId={item.id} clientId={id} data={item.expiredTime} onActionSuccess={refetch}>
                       <Button size={"icon"}>
-                        <Edit2Icon />
+                        Edit
                       </Button>
                     </ClientImapUpdate>
                     <ClientImapDelete

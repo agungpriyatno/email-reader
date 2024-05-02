@@ -78,8 +78,8 @@ const InboxTable = ({ imap }: InboxTableProps) => {
                     <TableCell>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button size={"icon"}>
-                            <EyeIcon />
+                          <Button size={"default"}>
+                            View
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="p-0 h-screen overflow-y-auto max-w-xl flex flex-col">
