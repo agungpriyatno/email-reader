@@ -8,9 +8,26 @@ import userRepo from "../repositories/userRepo";
 import userAuthSchema from "../schemas/userAuthSchema";
 import { decrypt, encrypt } from "../session";
 import userSchema from "../schemas/userSchema";
+import clientAuthSchema from "../schemas/clientAuthSchema";
+import db from "../db";
 
 const signInSchema = userAuthSchema.signIn;
 const signUpSchema = userSchema.create;
+
+const updatePassword = clientAuthSchema.updatePassword;
+
+const userUpdatePassword = async (
+  token: string,
+  payload: z.infer<typeof updatePassword>
+) => {
+  const { data } = await userSession(token);
+  const user = await db.user.findUnique({ where: { id: data.id } });
+  if (!user) throw new ApiError(405, "BADREQUEST");
+  const match = await bcrypt.compare(payload.old, user.hash);
+  if (!match) throw new ApiError(405, "BADREQUEST");
+  const hash = await bcrypt.hash(payload.new, 10);
+  await db.user.update({ where: { id: data.id }, data: { hash } });
+};
 
 const userSignIn = async (payload: z.infer<typeof signInSchema>) => {
   const { success } = signInSchema.safeParse(payload);
@@ -43,9 +60,9 @@ const userSession = async (token?: string) => {
   const payload = await decrypt(token);
   if (!payload) throw new ApiError(401, "UNAUTHORIZED");
   const { id } = payload;
-  const data = userRepo.find(id as string);
+  const data = await userRepo.find(id as string);
   if (!data) throw new ApiError(401, "UNAUTHORIZED");
   return { data };
 };
 
-export { userSignIn, userSignUp, userSession };
+export { userSignIn, userSignUp, userSession, userUpdatePassword };

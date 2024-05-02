@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import {
   HomeIcon,
+  KeyRoundIcon,
   MailIcon,
   MenuIcon,
   Settings,
@@ -18,6 +19,11 @@ export const MENU = [
     name: "Dashboard",
     path: "/dashboard",
     icon: <HomeIcon className="h-5 w-5" />,
+  },
+  {
+    name: "Update Password",
+    path: "/update-password",
+    icon: <KeyRoundIcon className="h-5 w-5" />,
   },
 ];
 

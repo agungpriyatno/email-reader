@@ -30,6 +30,9 @@ const findMany = (
   return db.clientImap.findMany({
     take,
     skip,
+    orderBy: {
+      expiredTime: "asc"
+    },
     include: { imap: true },
     where: {
       AND: [

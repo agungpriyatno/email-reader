@@ -8,9 +8,24 @@ import clientRepo from "../repositories/clientRepo";
 import clientAuthSchema from "../schemas/clientAuthSchema";
 import clientSchema from "../schemas/clientSchema";
 import { decrypt, encrypt } from "../session";
+import db from "../db";
 
 const signInSchema = clientAuthSchema.signIn;
 const signUpSchema = clientSchema.create;
+const updatePassword = clientAuthSchema.updatePassword;
+
+const clientUpdatePassword = async (
+  token: string,
+  payload: z.infer<typeof updatePassword>
+) => {
+  const { data } = await clientSession(token);
+  const client = await db.client.findUnique({ where: { id: data.id } });
+  if (!client) throw new ApiError(405, "BADREQUEST");
+  const match = await bcrypt.compare(payload.old, client.hash);
+  if (!match) throw new ApiError(405, "BADREQUEST");
+  const hash = await bcrypt.hash(payload.new, 10);
+  await db.client.update({ where: { id: data.id }, data: { hash } });
+};
 
 const clientSignIn = async (payload: z.infer<typeof signInSchema>) => {
   const { success } = signInSchema.safeParse(payload);
@@ -53,5 +68,4 @@ const clientSession = async (token?: string) => {
   return { data };
 };
 
-export { clientSession, clientSignIn, clientSignUp };
-
+export { clientSession, clientSignIn, clientSignUp, clientUpdatePassword };

@@ -1,6 +1,12 @@
 "use client";
 
-import { userSession, userSignIn, userSignUp } from "@/lib/actions/userAuthAction";
+import {
+  userSession,
+  userSignIn,
+  userSignUp,
+  userUpdatePassword,
+} from "@/lib/actions/userAuthAction";
+import clientAuthSchema from "@/lib/schemas/clientAuthSchema";
 import userAuthSchema from "@/lib/schemas/userAuthSchema";
 import userSchema from "@/lib/schemas/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -89,4 +95,41 @@ const useUserSession = () => {
   return query;
 };
 
-export { useUserSession, useUserSignIn, useUserSignUp };
+const useUserUpdatePassword = () => {
+  const schema = clientAuthSchema.updatePassword;
+
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      old: "",
+      new: "",
+    },
+  });
+
+  const submit = form.handleSubmit(async (value) => {
+    try {
+      const token = localStorage.getItem("user_session");
+      await userUpdatePassword(token ?? "", value);
+      toast("OK");
+      form.reset();
+    } catch (error) {
+      if (error instanceof ApiError) {
+      }
+      toast("FAIL");
+      console.log(error);
+    }
+  });
+
+  return {
+    schema,
+    form,
+    submit,
+  };
+};
+
+export {
+  useUserSession,
+  useUserSignIn,
+  useUserSignUp,
+  useUserUpdatePassword,
+};

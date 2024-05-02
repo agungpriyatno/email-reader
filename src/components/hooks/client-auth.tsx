@@ -4,6 +4,7 @@ import {
   clientSession,
   clientSignIn,
   clientSignUp,
+  clientUpdatePassword,
 } from "@/lib/actions/clientAuthAction";
 import clientAuthSchema from "@/lib/schemas/clientAuthSchema";
 import clientSchema from "@/lib/schemas/clientSchema";
@@ -12,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ApiError } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const useClientSignIn = () => {
@@ -95,4 +97,41 @@ const useClientSession = () => {
   return query;
 };
 
-export { useClientSession, useClientSignIn, useClientSignUp };
+const useClientUpdatePassword = () => {
+  const schema = clientAuthSchema.updatePassword;
+
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      old: "",
+      new: "",
+    },
+  });
+
+  const submit = form.handleSubmit(async (value) => {
+    try {
+      const token = localStorage.getItem("client_session");
+      await clientUpdatePassword(token ?? "", value);
+      toast("OK");
+      form.reset();
+    } catch (error) {
+      if (error instanceof ApiError) {
+      }
+      toast("FAIL");
+      console.log(error);
+    }
+  });
+
+  return {
+    schema,
+    form,
+    submit,
+  };
+};
+
+export {
+  useClientSession,
+  useClientSignIn,
+  useClientSignUp,
+  useClientUpdatePassword,
+};

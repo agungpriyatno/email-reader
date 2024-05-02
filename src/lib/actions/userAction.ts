@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 const createSchema = userSchema.create;
 const updateSchema = userSchema.update;
 
+
 const userFind = async (id: string) => {
   const data = await userRepo.find(id);
   return { data };

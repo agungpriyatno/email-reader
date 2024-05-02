@@ -24,6 +24,9 @@ const findMany = ({
   return db.client.findMany({
     take,
     skip,
+    orderBy: {
+      name: "asc"
+    },
     include: {
       _count: {
         select: {
