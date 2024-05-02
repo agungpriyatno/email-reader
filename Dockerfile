@@ -1,4 +1,4 @@
-FROM oven/bun:latest
+FROM node:alpine
 WORKDIR /app
 
 COPY . .
