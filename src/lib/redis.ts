@@ -5,7 +5,7 @@ const redis = createClient({
   username: "", // use your Redis user. More info https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
   password: "", // use your password here
   socket: {
-    host: "redis-stack",
+    host: process.env.REDIS_HOST,
     port: 6379,
   },
 });
