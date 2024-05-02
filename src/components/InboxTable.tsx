@@ -18,8 +18,16 @@ import { EyeIcon } from "lucide-react";
 import { TableLoading } from "./TableLoading";
 import { Button } from "./ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
+import { findMessages } from "@/lib/actions/gmailAction";
 
-type Message = {};
+type TMessage = {
+  id?: string | null;
+  to?: string | null;
+  from?: string | null;
+  date?: Date | null;
+  subject?: string | null;
+  body?: string | null;
+};
 
 type InboxTableProps = {
   imap?: Imap | null;
@@ -27,12 +35,12 @@ type InboxTableProps = {
 
 const InboxTable = ({ imap }: InboxTableProps) => {
   const fetcher = async () => {
-    const data = await emailFindMany(imap?.user);
+    const data = await findMessages(imap?.user);
     console.log(data);
     return data;
   };
 
-  const { data, refetch, isFetching, isError } = useQuery<Mail[]>({
+  const { data, refetch, isFetching, isError } = useQuery<TMessage[]>({
     queryKey: ["inbox"],
     queryFn: fetcher,
     refetchInterval: 10000,
@@ -88,7 +96,7 @@ const InboxTable = ({ imap }: InboxTableProps) => {
                           <div className="flex-1">
                             <div
                               dangerouslySetInnerHTML={{
-                                __html: item.html as string,
+                                __html: item.body ?? "",
                               }}
                             ></div>
                           </div>

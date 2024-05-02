@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
@@ -57,12 +57,13 @@ model ClientImap {
   @@map("client_imaps")
 }
 
-model Mail {
-  id      String    @id
-  subject String?
-  to      String?  
-  html    String?
-  date    DateTime?
+model Token {
+  id           String   @id
+  accessToken  String   @map("access_token")
+  refreshToken String   @map("refresh_token")
+  tokenType    String   @map("token_type")
+  scope        String
+  expiryDate   DateTime @map("expiry_date")
 
-  @@map("mails")
+  @@map("tokens")
 }

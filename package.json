@@ -11,6 +11,7 @@
     "orm": "prisma"
   },
   "dependencies": {
+    "@googleapis/gmail": "^9.0.0",
     "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "5.13.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -27,8 +28,11 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "dotenv-cli": "^7.4.1",
+    "gmail-api-parse-message": "^2.1.2",
+    "googleapis": "^135.0.0",
     "jose": "^5.2.4",
     "lucide-react": "^0.375.0",
+    "mailparser": "^3.7.1",
     "next": "14.2.3",
     "next-themes": "^0.3.0",
     "only-server": "^0.0.1",
@@ -36,8 +40,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.3",
-    "react-html-parser": "^2.0.2",
     "react-markdown": "^9.0.1",
+    "redis": "^4.6.13",
     "sharp": "^0.33.3",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.3.0",
@@ -46,6 +50,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/mailparser": "^3.4.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
