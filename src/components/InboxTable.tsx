@@ -14,7 +14,6 @@ import {
 import { findMessages } from "@/lib/actions/gmailAction";
 import { Imap } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { EyeIcon } from "lucide-react";
 import { TableLoading } from "./TableLoading";
 import { Button } from "./ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";

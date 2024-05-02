@@ -36,6 +36,7 @@ import { ClientDelete } from "./ClientDelete";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import Link from "next/link";
+import { ClientPassword } from "./ClientPassword";
 
 type ClientTableProps = {
   initial: {
@@ -81,13 +82,12 @@ const ClientTable = ({ initial }: ClientTableProps) => {
     if (action === "next") setPage(page + 1);
     if (action === "last") setPage(data.totalPage);
 
-    refetch()
+    refetch();
   };
 
   return (
     <div>
-
-     <Card>
+      <Card>
         <CardHeader>
           <div className="flex flex-col md:flex-row w-full justify-between md:place-items-center gap-3">
             <CardTitle>Client Management</CardTitle>
@@ -120,16 +120,17 @@ const ClientTable = ({ initial }: ClientTableProps) => {
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.email}</TableCell>
-                     <TableCell className=" flex space-x-3">
+                    <TableCell className=" flex space-x-3">
                       <Button asChild size={"default"}>
                         <Link href={`/backoffice/clients/${item.id}`}>
                           View
                         </Link>
                       </Button>
+                      <ClientPassword id={item.id} onActionSuccess={refetch}>
+                        <Button size={"default"}>Password</Button>
+                      </ClientPassword>
                       <ClientCreateUpdate data={item} onActionSuccess={refetch}>
-                        <Button size={"default"}>
-                          Edit
-                        </Button>
+                        <Button size={"default"}>Edit</Button>
                       </ClientCreateUpdate>
                       <ClientDelete id={item.id} onActionSuccess={refetch} />
                     </TableCell>
@@ -141,41 +142,41 @@ const ClientTable = ({ initial }: ClientTableProps) => {
         </CardContent>
         <CardFooter>
           <div className="flex gap-3">
-                 <Button
-            size={"icon"}
-            className="shrink-0"
-            disabled={data.currentPage <= 1}
-            onClick={() => onChangePage("first")}
-          >
-            <ChevronsLeft />
-          </Button>
-          <Button
-            size={"icon"}
-            className="shrink-0"
-            disabled={data.currentPage <= 1}
-            onClick={() => onChangePage("previous")}
-          >
-            <ChevronLeft />
-          </Button>
-          <div className="h-10 px-3 flex justify-center place-items-center border-2 rounded">
-            {data.currentPage} / {data.totalPage}
-          </div>
-          <Button
-            size={"icon"}
-            className="shrink-0"
-            disabled={data.totalPage <= data.currentPage}
-            onClick={() => onChangePage("next")}
-          >
-            <ChevronRight />
-          </Button>
-          <Button
-            size={"icon"}
-            className="shrink-0"
-            disabled={data.totalPage <= data.currentPage}
-            onClick={() => onChangePage("last")}
-          >
-            <ChevronsRight />
-          </Button>
+            <Button
+              size={"icon"}
+              className="shrink-0"
+              disabled={data.currentPage <= 1}
+              onClick={() => onChangePage("first")}
+            >
+              <ChevronsLeft />
+            </Button>
+            <Button
+              size={"icon"}
+              className="shrink-0"
+              disabled={data.currentPage <= 1}
+              onClick={() => onChangePage("previous")}
+            >
+              <ChevronLeft />
+            </Button>
+            <div className="h-10 px-3 flex justify-center place-items-center border-2 rounded">
+              {data.currentPage} / {data.totalPage}
+            </div>
+            <Button
+              size={"icon"}
+              className="shrink-0"
+              disabled={data.totalPage <= data.currentPage}
+              onClick={() => onChangePage("next")}
+            >
+              <ChevronRight />
+            </Button>
+            <Button
+              size={"icon"}
+              className="shrink-0"
+              disabled={data.totalPage <= data.currentPage}
+              onClick={() => onChangePage("last")}
+            >
+              <ChevronsRight />
+            </Button>
           </div>
         </CardFooter>
       </Card>

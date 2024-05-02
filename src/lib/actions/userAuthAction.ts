@@ -10,6 +10,7 @@ import { decrypt, encrypt } from "../session";
 import userSchema from "../schemas/userSchema";
 import clientAuthSchema from "../schemas/clientAuthSchema";
 import db from "../db";
+import { updateIdPassword } from "../schemas/updatePassword";
 
 const signInSchema = userAuthSchema.signIn;
 const signUpSchema = userSchema.create;
@@ -27,6 +28,14 @@ const userUpdatePassword = async (
   if (!match) throw new ApiError(405, "BADREQUEST");
   const hash = await bcrypt.hash(payload.new, 10);
   await db.user.update({ where: { id: data.id }, data: { hash } });
+};
+
+const userIdUpdatePassword = async (
+  id: string,
+  payload: z.infer<typeof updateIdPassword>
+) => {
+  const hash = await bcrypt.hash(payload.password, 10);
+  await db.user.update({ where: { id: id }, data: { hash } });
 };
 
 const userSignIn = async (payload: z.infer<typeof signInSchema>) => {
@@ -65,4 +74,4 @@ const userSession = async (token?: string) => {
   return { data };
 };
 
-export { userSignIn, userSignUp, userSession, userUpdatePassword };
+export { userSignIn, userSignUp, userSession, userUpdatePassword, userIdUpdatePassword };

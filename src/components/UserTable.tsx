@@ -34,6 +34,7 @@ import { UserCreateUpdate } from "./UserCreateUpdate";
 import { UserDelete } from "./UserDelete";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { UserPassword } from "./UserPassword";
 
 type UserTableProps = {
   initial: {
@@ -120,10 +121,11 @@ const UserTable = ({ initial }: UserTableProps) => {
                     <TableCell>{item.email}</TableCell>
                     <TableCell className="flex space-x-3">
                       <UserCreateUpdate data={item} onActionSuccess={refetch}>
-                        <Button size={"default"}>
-                          Edit
-                        </Button>
+                        <Button size={"default"}>Edit</Button>
                       </UserCreateUpdate>
+                      <UserPassword id={item.id} onActionSuccess={refetch}>
+                        <Button size={"default"}>Password</Button>
+                      </UserPassword>
                       <UserDelete id={item.id} onActionSuccess={refetch} />
                     </TableCell>
                   </TableRow>

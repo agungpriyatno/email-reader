@@ -32,10 +32,12 @@ const useClientSignIn = () => {
     try {
       const { data } = await clientSignIn(value);
       localStorage.setItem("client_session", data.accessToken);
+      toast("OK")
       router.push("/dashboard");
     } catch (error) {
       if (error instanceof ApiError) {
       }
+      toast("FAIL")
       console.log(error);
     }
   });
