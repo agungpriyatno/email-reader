@@ -71,7 +71,7 @@ const findMessages = async (to?: string) => {
             };
             messages.push(message);
             await redis.set(item.id, JSON.stringify(message), {
-              EX: 60 * 60 * 24 * 3,
+              EX: 60 * 60 * 24 * 7,
             });
           }
         } else {

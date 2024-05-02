@@ -1,6 +1,5 @@
 import { InboxTable } from "@/components/InboxTable";
 import { imapFind } from "@/lib/actions/imapAction";
-import { emailFindMany } from "@/lib/repositories/emailRepo";
 
 type ImapsDetailPageProps = {
   params: { id: string };

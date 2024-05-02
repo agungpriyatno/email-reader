@@ -1,15 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { useUserSignIn } from "./hooks/user-auth";
 import { SubmitButton } from "./ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "./ui/card";
 import {
   Form,
@@ -68,14 +66,14 @@ const UserSignInForm = () => {
           </form>
         </Form>
       </CardContent>
-      <CardFooter>
+      {/* <CardFooter>
         <div className="mt-4 text-center text-sm w-full">
           Don&apos;t have an account?{" "}
           <Link href="/backoffice/signup" className="underline">
             Sign up
           </Link>
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 };
