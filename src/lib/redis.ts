@@ -6,8 +6,8 @@ const redis = createClient({
   password: "", // use your password here
   socket: {
     host: process.env.REDIS_HOST,
-    port: 6379,
-  },
+    port: 6379
+  }
 });
 
 redis.on("error", (err) => {
