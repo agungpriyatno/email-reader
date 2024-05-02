@@ -3,9 +3,11 @@
 import { WHITE_LIST } from "@/constants/whitelist";
 import { google } from "googleapis";
 import { ApiError } from "next/dist/server/api-utils";
-import { oauth2SetCredential } from "../oauth";
+import { oauth2Client, oauth2SetCredential } from "../oauth";
 import { redis } from "../redis";
 import { tokenRepo } from "../repositories/tokenRepo";
+import db from "../db";
+import { redirect } from "next/navigation";
 
 type TMessage = {
   id?: string | null;
@@ -86,4 +88,43 @@ const findMessages = async (to?: string) => {
   return messages;
 };
 
-export { findMessages };
+const connectToGmail = async (code?: string) => {
+  const { tokens } = await oauth2Client.getToken(code ?? "");
+  const { access_token, refresh_token, expiry_date, scope, token_type } =
+    tokens;
+  const found = await db.token.findUnique({ where: { id: "main-token" } });
+  if (found) {
+    return await db.token.update({
+      where: { id: "main-token" },
+      data: {
+        accessToken: access_token ?? "",
+        refreshToken: refresh_token ?? found.refreshToken,
+        tokenType: token_type ?? "",
+        expiryDate: new Date(expiry_date ?? 0),
+        scope: scope ?? "",
+      },
+    });
+  }
+  
+  return await db.token.create({
+    data: {
+      id: "main-token",
+      accessToken: access_token ?? "",
+      refreshToken: refresh_token ?? "",
+      tokenType: token_type ?? "",
+      expiryDate: new Date(expiry_date ?? 0),
+      scope: scope ?? "",
+    },
+  });
+};
+
+const checkConnection = async () => {
+  const token = await tokenRepo.find();
+  if (!token) throw new ApiError(405, "Bad Request");
+  const oauth2 = oauth2SetCredential(token);
+  const gmail = google.gmail({ version: "v1", auth: oauth2 }).users;
+  const { data } = await gmail.getProfile({ userId: "me" });
+  return data;
+};
+
+export { findMessages, connectToGmail, checkConnection };

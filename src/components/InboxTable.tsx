@@ -11,14 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { emailFindMany } from "@/lib/repositories/emailRepo";
-import { Imap, Mail } from "@prisma/client";
+import { findMessages } from "@/lib/actions/gmailAction";
+import { Imap } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { EyeIcon } from "lucide-react";
 import { TableLoading } from "./TableLoading";
 import { Button } from "./ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
-import { findMessages } from "@/lib/actions/gmailAction";
 
 type TMessage = {
   id?: string | null;
@@ -36,7 +35,6 @@ type InboxTableProps = {
 const InboxTable = ({ imap }: InboxTableProps) => {
   const fetcher = async () => {
     const data = await findMessages(imap?.user);
-    console.log(data);
     return data;
   };
 

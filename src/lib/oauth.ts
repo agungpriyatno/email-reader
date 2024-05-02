@@ -13,7 +13,7 @@ const SCOPES = [
 const oauth2Client = new google.auth.OAuth2({
   clientId: process.env.OAUTH_KEY,
   clientSecret: process.env.OAUTH_SECRET,
-  redirectUri: "http://localhost:3000/api/connect",
+  redirectUri: process.env.OAUTH_REDIRECT,
 });
 
 const oauth2SetCredential = (token: Token) => {
