@@ -2,9 +2,7 @@
 const nextConfig = {
     experimental: {
         serverActions: {
-            allowedOrigins: [
-                'http://localhost'
-            ]
+            allowedOrigins: ["mediaid.id", "localhost:3000", "mailer:3000"]
         }
     }
 };
