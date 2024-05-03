@@ -10,9 +10,11 @@ const createBatchEmail = async ({ password }: z.infer<typeof updateIdPassword>) 
   const list = raw.split("\n");
   for (let i = 0; i < list.length; i++) {
     const item = list[i];
-    const data = await db.imap.findUnique({ where: { user: item } });
-    if (!data) {
-      await db.imap.create({ data: { user: item } });
+    if (item.includes('@')) {
+      const data = await db.imap.findUnique({ where: { user: item } });
+      if (!data) {
+        await db.imap.create({ data: { user: item } });
+      }
     }
   }
 };
