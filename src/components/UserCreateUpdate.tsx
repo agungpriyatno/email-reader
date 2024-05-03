@@ -84,8 +84,7 @@ const UserCreateUpdate = ({
                 </FormItem>
               )}
             />
-            {data === undefined && (
-              <FormField
+            <FormField
                 control={control}
                 name="email"
                 render={({ field: { ...props } }) => (
@@ -98,7 +97,6 @@ const UserCreateUpdate = ({
                   </FormItem>
                 )}
               />
-            )}
             {data === undefined && (
               <FormField
                 control={control}

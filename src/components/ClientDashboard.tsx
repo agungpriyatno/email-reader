@@ -156,7 +156,7 @@ const ClientDashboard = () => {
           <Button
             size={"icon"}
             className="shrink-0"
-            disabled={data.totalPage >= data.currentPage}
+            disabled={data.totalPage <= data.currentPage}
             onClick={() => onChangePage("next")}
           >
             <ChevronRight />
@@ -164,7 +164,7 @@ const ClientDashboard = () => {
           <Button
             size={"icon"}
             className="shrink-0"
-            disabled={data.totalPage >= data.currentPage}
+            disabled={data.totalPage <= data.currentPage}
             onClick={() => onChangePage("last")}
           >
             <ChevronsRight />

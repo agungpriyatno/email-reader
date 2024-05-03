@@ -52,11 +52,13 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
   const [search, setSearch] = useState<string>("");
 
   const fetcher = async () => {
-    return await clientImapFindMany(id, {
+    const data = await clientImapFindMany(id, {
       page,
       take,
       search,
     });
+
+    return data
   };
 
   const { data, refetch, isLoading, isError } = useQuery<{
