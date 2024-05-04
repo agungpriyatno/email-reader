@@ -80,10 +80,65 @@ const clientImapFindManySession = async (
   return { data, total, totalPage, currentPage: page };
 };
 
+const clientImapFindManyNotID = async ({
+  id,
+  search,
+}: {
+  id: string;
+  search: string;
+}) => {
+  const data = await db.imap.findMany({
+    take: 20,
+    where: {
+      AND: [
+        { NOT: { clients: { some: { clientId: id } } } },
+        { OR: [{ user: { contains: search } }] },
+      ],
+    },
+  });
+
+  return { data };
+};
+
+const clientImapFindManyID = async (
+  id: string,
+  {
+    page,
+    take,
+    search,
+  }: {
+    page: number;
+    take: number;
+    search: string;
+  }
+) => {
+  const skip = (page - 1) * take;
+  const resp = await clientImapRepo.findManyNotID(id, {
+    take,
+    skip,
+    search,
+  });
+  const total = await clientImapRepo.count(id);
+  const totalPage = Math.ceil(total / take);
+  const filter = resp.filter((item) => {
+    if (item.imap.user === "muscle@shinki.id") {
+      console.log(item);
+      return false;
+    }
+    return true;
+  });
+  const data = resp.map(({ expiredTime, imap }) => {
+    return { expiredTime, ...imap };
+  });
+  return { data, total, totalPage, currentPage: page };
+};
+
 export {
   clientImapUpdate,
   clientImapCreateMany,
   clientImapFindMany,
   clientImapRemove,
   clientImapFindManySession,
+  clientImapFindManyID,
+  clientImapFindManyNotID,
 };

@@ -31,7 +31,7 @@ const findMany = (
     take,
     skip,
     orderBy: {
-      expiredTime: "asc"
+      expiredTime: "asc",
     },
     include: { imap: true },
     where: {
@@ -41,6 +41,31 @@ const findMany = (
           OR: [{ imap: { user: { contains: search } } }],
         },
       ],
+    },
+  });
+};
+
+const findManyNotID = (
+  id: string,
+  {
+    take,
+    skip,
+    search,
+  }: {
+    take: number;
+    skip: number;
+    search: string;
+  }
+) => {
+  return db.clientImap.findMany({
+    take,
+    skip,
+    orderBy: {
+      expiredTime: "asc",
+    },
+    include: { imap: true },
+    where: {
+      OR: [{ imap: { user: { contains: search } } }],
     },
   });
 };
@@ -78,6 +103,7 @@ const clientImapRepo = {
   findMany,
   remove,
   count,
+  findManyNotID,
 };
 
 export default clientImapRepo;

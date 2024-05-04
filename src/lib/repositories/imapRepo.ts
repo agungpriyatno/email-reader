@@ -1,11 +1,11 @@
+import { Prisma } from "@prisma/client";
 import "only-server";
 import db from "../db";
-import { Prisma } from "@prisma/client";
 
 const count = () => db.imap.count();
-
+type D = Prisma.ClientImapListRelationFilter;
 const find = (key: string) => {
-  return db.imap.findUnique({ where: { id: key }});
+  return db.imap.findUnique({ where: { id: key } });
 };
 
 const findMany = ({
@@ -28,10 +28,50 @@ const findMany = ({
       },
     },
     where: {
-      OR: [
-        { id: { contains: search } },
-        { user: { contains: search } },
-      ],
+      OR: [{ id: { contains: search } }, { user: { contains: search } }],
+    },
+  });
+};
+
+const findManyWithout = (
+  userId: string,
+  {
+    take,
+    skip,
+    search,
+  }: {
+    take: number;
+    skip: number;
+    search: string;
+  }
+) => {
+  return db.imap.findMany({
+    take,
+    skip,
+    include: {
+      clients: true,
+      _count: {
+        select: {
+          clients: true,
+        },
+      },
+    },
+    where: {
+      clients: {
+        some: {
+          clientId: "helo",
+        },
+      },
+      // AND: [
+      //   {
+      //     NOT: {
+      //       clients: {
+      //         none: { clientId: userId },
+      //       },
+      //     },
+      //   },
+      //   { OR: [{ id: { contains: search } }, { user: { contains: search } }] },
+      // ],
     },
   });
 };
@@ -57,7 +97,8 @@ const imapRepo = {
   remove,
   find,
   findMany,
-  count
+  count,
+  findManyWithout,
 };
 
 export default imapRepo;

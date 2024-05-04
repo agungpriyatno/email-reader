@@ -1,11 +1,11 @@
 "use client";
 
-import { clientImapCreateMany } from "@/lib/actions/clientImapAction";
-import { imapFindMany } from "@/lib/actions/imapAction";
+import { clientImapCreateMany, clientImapFindManyID, clientImapFindManyNotID } from "@/lib/actions/clientImapAction";
+import { imapFindMany, imapFindManyWithout } from "@/lib/actions/imapAction";
 import clientImapSchema from "@/lib/schemas/clientImapSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { PlusIcon, Trash2Icon } from "lucide-react";
+import { DeleteIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import React, { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -57,11 +57,11 @@ const ClientImapCreate = ({
   const [search, setSearch] = useState("");
 
   const fetcher = async () => {
-    return await imapFindMany({ page: 1, take: 15, search });
+    return await clientImapFindManyNotID({ id, search });
   };
 
   const { data, refetch, isLoading, isError } = useQuery({
-    queryKey: ["imap-list"],
+    queryKey: ["imap-list-select"],
     queryFn: fetcher,
   });
 
@@ -82,8 +82,15 @@ const ClientImapCreate = ({
     }
   });
 
+  const onOpenChange = (val: boolean) => {
+    setModal(val)
+    if (val) {
+      refetch()
+    }
+  }
+
   return (
-    <Dialog open={showModal} onOpenChange={setModal}>
+    <Dialog open={showModal} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-xl">
         <DialogTitle>New Client Imap</DialogTitle>
@@ -135,8 +142,9 @@ const ClientImapCreate = ({
                         onClick={() => remove(fields.length - 1)}
                         size={"icon"}
                         variant={"destructive"}
+                        className="flex-shrink-0"
                       >
-                        Hapus
+                        <Trash2Icon/>
                       </Button>
                     </div>
                   )}

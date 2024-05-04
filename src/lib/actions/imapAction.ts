@@ -30,6 +30,25 @@ const imapFindMany = async ({
   return { data, total, totalPage, currentPage: page };
 };
 
+const imapFindManyWithout = async (
+  userId: string,
+  {
+    page,
+    take,
+    search,
+  }: {
+    page: number;
+    take: number;
+    search: string;
+  }
+) => {
+  const skip = (page - 1) * take;
+  const data = await imapRepo.findManyWithout(userId, { take, skip, search });
+  const total = await imapRepo.count();
+  const totalPage = Math.ceil(total / take);
+  return { data, total, totalPage, currentPage: page };
+};
+
 const imapCreate = async (payload: z.infer<typeof createSchema>) => {
   const { success } = createSchema.safeParse(payload);
   if (!success) throw new ApiError(405, "BAD_REQUEST");
@@ -49,7 +68,13 @@ const imapUpdate = async (
 const imapRemove = async (id: string) => {
   await imapRepo.remove(id);
   revalidatePath("/backoffice/dashboard");
-  
 };
 
-export { imapCreate, imapFind, imapFindMany, imapRemove, imapUpdate };
+export {
+  imapCreate,
+  imapFind,
+  imapFindMany,
+  imapRemove,
+  imapUpdate,
+  imapFindManyWithout,
+};
