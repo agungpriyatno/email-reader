@@ -53,6 +53,28 @@ const clientImapFindMany = async (
   return { data, total, totalPage, currentPage: page };
 };
 
+const imapClientFindMany = async (
+  id: string,
+  {
+    page,
+    take,
+    search,
+  }: {
+    page: number;
+    take: number;
+    search: string;
+  }
+) => {
+  const skip = (page - 1) * take;
+  const resp = await clientImapRepo.findManyImap(id, { take, skip, search });
+  const total = await clientImapRepo.count(id);
+  const totalPage = Math.ceil(total / take);
+  const data = resp.map(({ expiredTime, client }) => {
+    return { expiredTime, ...client };
+  });
+  return { data, total, totalPage, currentPage: page };
+};
+
 const clientImapFindManySession = async (
   token: string,
   {
@@ -141,4 +163,5 @@ export {
   clientImapFindManySession,
   clientImapFindManyID,
   clientImapFindManyNotID,
+  imapClientFindMany
 };

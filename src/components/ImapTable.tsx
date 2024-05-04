@@ -134,7 +134,10 @@ const ImapTable = ({ initial }: ImapTableProps) => {
                     <TableCell>{item._count.clients}</TableCell>
                     <TableCell className=" flex space-x-3">
                       <Button asChild size={"default"}>
-                        <Link href={`/backoffice/imaps/${item.id}`}>View</Link>
+                        <Link href={`/backoffice/imaps/subcribers/${item.id}`}>Subcribers</Link>
+                      </Button>
+                      <Button asChild size={"default"}>
+                        <Link href={`/backoffice/imaps/${item.id}`}>Inbox</Link>
                       </Button>
                       <ImapCreateUpdate data={item} onActionSuccess={refetch}>
                         <Button size={"default"}>Edit</Button>

@@ -52,7 +52,7 @@ const ClientImapCreate = ({
     resolver: zodResolver(createSchema),
     defaultValues: {
       imaps: [
-        { imapId: "", user: "" },
+        { imapId: "", user: "", expiredTime: "" },
       ],
     },
   });
