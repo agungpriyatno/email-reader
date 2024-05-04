@@ -90,7 +90,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
     <Card>
       <CardHeader>
         <div className="flex w-full justify-between place-items-center">
-          <CardTitle>Client Imap Table</CardTitle>
+          <CardTitle>Client Subcription</CardTitle>
           <div className="flex gap-3">
             <Input placeholder="Search" onChange={onChange} />
             <ClientImapCreate id={id} onActionSuccess={refetch}>

@@ -100,7 +100,7 @@ const ImapTable = ({ initial }: ImapTableProps) => {
       <Card>
         <CardHeader>
           <div className="flex flex-col md:flex-row w-full justify-between md:place-items-center gap-3">
-            <CardTitle>Imap Management</CardTitle>
+            <CardTitle>Email Management</CardTitle>
             <div className="flex gap-3">
               <Input placeholder="Search" onChange={onChange} />
               <ImapCreateUpdate onActionSuccess={refetch}>
@@ -121,7 +121,7 @@ const ImapTable = ({ initial }: ImapTableProps) => {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[100px]">No</TableHead>
-                <TableHead>User</TableHead>
+                <TableHead>Email</TableHead>
                 <TableHead>Subcribers</TableHead>
                 <TableHead>Action</TableHead>
               </TableRow>

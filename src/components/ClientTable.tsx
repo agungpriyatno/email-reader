@@ -38,9 +38,15 @@ import { Input } from "./ui/input";
 import Link from "next/link";
 import { ClientPassword } from "./ClientPassword";
 
+type TData = Client & {
+  _count: {
+    imaps: number;
+  };
+};
+
 type ClientTableProps = {
   initial: {
-    data: Client[];
+    data: TData[];
     currentPage: number;
     totalPage: number;
   };
@@ -61,7 +67,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
   };
 
   const { data, refetch, isLoading, isError } = useQuery<{
-    data: Client[];
+    data: TData[];
     currentPage: number;
     totalPage: number;
   }>({
@@ -73,7 +79,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value);
-    setPage(1)
+    setPage(1);
     refetch();
   };
 
@@ -111,6 +117,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
                 <TableHead className="w-[100px]">No</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Subcriptions</TableHead>
                 <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -121,6 +128,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.email}</TableCell>
+                    <TableCell>{item._count.imaps}</TableCell>
                     <TableCell className=" flex space-x-3">
                       <Button asChild size={"default"}>
                         <Link href={`/backoffice/clients/${item.id}`}>

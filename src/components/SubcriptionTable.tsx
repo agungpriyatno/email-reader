@@ -89,7 +89,7 @@ const SubcribtionTable = ({ id, initial }: SubcribtionTableProps) => {
     <Card>
       <CardHeader>
         <div className="flex w-full justify-between place-items-center">
-          <CardTitle>Client Imap Table</CardTitle>
+          <CardTitle>Email Subcriber</CardTitle>
           <div className="flex gap-3">
             <Input placeholder="Search" onChange={onChange} />
           </div>

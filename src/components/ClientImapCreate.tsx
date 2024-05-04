@@ -95,7 +95,7 @@ const ClientImapCreate = ({
     <Dialog open={showModal} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-xl max-h-screen overflow-y-auto">
-        <DialogTitle>New Client Imap</DialogTitle>
+        <DialogTitle>New Client Email</DialogTitle>
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-3">
             {fields.map((item, i) => (
