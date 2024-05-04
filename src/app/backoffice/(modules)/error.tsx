@@ -17,7 +17,7 @@ const ModuleError = ({ error, reset }: ModuleErrorProps) => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-center">Sorry.. Server Error</CardTitle>
+        <CardTitle className="text-center">Sorry your connection was lost</CardTitle>
       </CardHeader>
       <CardContent className="flex justify-center place-items-center">
         <Button onClick={() => reset()}>Try Again</Button>
