@@ -14,6 +14,7 @@ const WHITE_LIST = [
   "A new device is using your account",
   "Your password has been changed",
   "Sandi sudah diubah ",
+  "Netflix: Kode masukmu"
 ];
 
 export { WHITE_LIST };

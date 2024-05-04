@@ -61,7 +61,8 @@ const InboxTable = ({ imap }: InboxTableProps) => {
               <TableHead className="w-[100px]">No</TableHead>
               <TableHead>To</TableHead>
               <TableHead className="w-[300px]">Subject</TableHead>
-              <TableHead className="w-20">Date</TableHead>
+              <TableHead className="w-[100px]">Date</TableHead>
+              <TableHead className="w-[100px]">Time</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -73,7 +74,8 @@ const InboxTable = ({ imap }: InboxTableProps) => {
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{item.to}</TableCell>
                     <TableCell>{item.subject}</TableCell>
-                    <TableCell>{item.date?.toDateString()}</TableCell>
+                    <TableCell>{item.date?.toLocaleDateString()}</TableCell>
+                    <TableCell>{item.date?.toLocaleTimeString()}</TableCell>
                     <TableCell>
                       <Dialog>
                         <DialogTrigger asChild>
