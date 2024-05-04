@@ -92,11 +92,6 @@ const SubcribtionTable = ({ id, initial }: SubcribtionTableProps) => {
           <CardTitle>Client Imap Table</CardTitle>
           <div className="flex gap-3">
             <Input placeholder="Search" onChange={onChange} />
-            <ClientImapCreate id={id} onActionSuccess={refetch}>
-              <Button size={"icon"} className=" shrink-0">
-                <PlusIcon />
-              </Button>
-            </ClientImapCreate>
           </div>
         </div>
       </CardHeader>
