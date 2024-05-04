@@ -76,6 +76,7 @@ const ImapTable = ({ initial }: ImapTableProps) => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value);
+    setPage(1)
     refetch();
   };
 

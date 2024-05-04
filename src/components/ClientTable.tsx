@@ -73,6 +73,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value);
+    setPage(1)
     refetch();
   };
 
