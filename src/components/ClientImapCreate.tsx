@@ -1,11 +1,11 @@
 "use client";
 
-import { clientImapCreateMany, clientImapFindManyID, clientImapFindManyNotID } from "@/lib/actions/clientImapAction";
-import { imapFindMany, imapFindManyWithout } from "@/lib/actions/imapAction";
+import {
+  clientImapCreateMany
+} from "@/lib/actions/clientImapAction";
 import clientImapSchema from "@/lib/schemas/clientImapSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
-import { DeleteIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { PlusIcon, Trash2Icon } from "lucide-react";
 import React, { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -14,19 +14,32 @@ import { Button, SubmitButton } from "./ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { SelectSearch } from "./ui/select-search";
 
 type ClientImapCreateProps = {
   id: string;
   children?: React.ReactNode;
   onActionSuccess?: () => void;
 };
+
+type TData = {
+  data: {
+    id: string;
+    user: string;
+  };
+};
+
+const languages = [
+  { label: "English", value: "en" },
+  { label: "French", value: "fr" },
+  { label: "German", value: "de" },
+  { label: "Spanish", value: "es" },
+  { label: "Portuguese", value: "pt" },
+  { label: "Russian", value: "ru" },
+  { label: "Japanese", value: "ja" },
+  { label: "Korean", value: "ko" },
+  { label: "Chinese", value: "zh" },
+] as const
 
 const ClientImapCreate = ({
   id,
@@ -38,7 +51,9 @@ const ClientImapCreate = ({
   const form = useForm<z.infer<typeof createSchema>>({
     resolver: zodResolver(createSchema),
     defaultValues: {
-      imaps: [{ imapId: "" }],
+      imaps: [
+        { imapId: "", user: "" },
+      ],
     },
   });
 
@@ -46,6 +61,8 @@ const ClientImapCreate = ({
     reset,
     control,
     handleSubmit,
+    setValue,
+    getValues,
     formState: { isSubmitting },
   } = form;
 
@@ -53,22 +70,6 @@ const ClientImapCreate = ({
     name: "imaps",
     control: form.control,
   });
-
-  const [search, setSearch] = useState("");
-
-  const fetcher = async () => {
-    return await clientImapFindManyNotID({ id, search });
-  };
-
-  const { data, refetch, isLoading, isError } = useQuery({
-    queryKey: ["imap-list-select"],
-    queryFn: fetcher,
-  });
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.currentTarget.value);
-    refetch();
-  };
 
   const onSubmit = handleSubmit(async (val) => {
     try {
@@ -82,17 +83,18 @@ const ClientImapCreate = ({
     }
   });
 
-  const onOpenChange = (val: boolean) => {
-    setModal(val)
-    if (val) {
-      refetch()
-    }
+  const getValueId = (val: string) => {
+   return  getValues().imaps.find((item) => item.imapId === val )
   }
+
+  const onOpenChange = (val: boolean) => {
+    setModal(val);
+  };
 
   return (
     <Dialog open={showModal} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-xl">
+      <DialogContent className="max-w-xl max-h-screen overflow-y-auto">
         <DialogTitle>New Client Imap</DialogTitle>
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-3">
@@ -103,38 +105,12 @@ const ClientImapCreate = ({
                   name={`imaps.${i}.imapId`}
                   key={item.id}
                   render={({ field }) => (
-                    <div className="flex gap-3 w-full">
-                      <FormItem className="flex-1">
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl className="w-full flex">
-                            <SelectTrigger className="w-full flex-1">
-                              <SelectValue placeholder="Search Imap" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent onClick={(e) => e.stopPropagation()}>
-                            <Input
-                              className="mb-2"
-                              placeholder="Search"
-                              defaultValue={search}
-                              onChange={onChange}
-                            />
-                            {!isLoading &&
-                              data?.data.map((item, i) => (
-                                <SelectItem
-                                  key={i}
-                                  value={item.id}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                  }}
-                                >
-                                  {item.user}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
+                    <div className="flex gap-3 w-full relative">
+                      <FormItem className="flex-1 w-full">
+                        <SelectSearch id={id} whitelist={getValues().imaps} index={i} value={getValueId(field.value)?.user ?? ""} onChange={(ids, user) => {
+                          setValue(`imaps.${i}.imapId`, ids)
+                          setValue(`imaps.${i}.user`, user)
+                        }}/>
                         <FormMessage />
                       </FormItem>
                       <Button
@@ -144,7 +120,7 @@ const ClientImapCreate = ({
                         variant={"destructive"}
                         className="flex-shrink-0"
                       >
-                        <Trash2Icon/>
+                        <Trash2Icon />
                       </Button>
                     </div>
                   )}
@@ -174,7 +150,7 @@ const ClientImapCreate = ({
               <div className=" h-10 w-full bg-muted rounded"></div>
               <Button
                 type="button"
-                onClick={() => append({ imapId: "", expiredTime: "" })}
+                onClick={() => append({ imapId: "", expiredTime: "", user: "" })}
                 size={"icon"}
                 variant={"outline"}
               >
