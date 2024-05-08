@@ -8,9 +8,9 @@ import imapRepo from "@/lib/repositories/imapRepo";
 import userRepo from "@/lib/repositories/userRepo";
 
 const UserDashboardPage = async () => {
-  const users = await userRepo.count();
-  const clients = await clientRepo.count();
-  const imaps = await imapRepo.count();
+  const users = await userRepo.count({});
+  const clients = await clientRepo.count({});
+  const imaps = await imapRepo.count({});
   // const data = await findManyClient({ page: 1, take: 15, search: "" });
   return (
     <main className="w-full space-y-5">
