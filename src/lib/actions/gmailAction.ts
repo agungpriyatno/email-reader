@@ -8,6 +8,7 @@ import { redis } from "../redis";
 import { tokenRepo } from "../repositories/tokenRepo";
 import db from "../db";
 import { redirect } from "next/navigation";
+import { findAllFilter } from "./filterAction";
 
 type TMessage = {
   id?: string | null;
@@ -19,7 +20,7 @@ type TMessage = {
 };
 
 const findMessages = async (to?: string) => {
-  const whitelist = WHITE_LIST;
+  const whitelist = await findAllFilter();
   const token = await tokenRepo.find();
   if (!token) throw new ApiError(405, "Bad Request");
   const messages: TMessage[] = [];
@@ -46,7 +47,7 @@ const findMessages = async (to?: string) => {
             (data) => data.name === "Subject"
           );
           const match = whitelist.find((item) =>
-            subject?.value?.includes(item)
+            subject?.value?.includes(item.name)
           );
           if (match) {
             let body = "";
@@ -105,7 +106,7 @@ const connectToGmail = async (code?: string) => {
       },
     });
   }
-  
+
   return await db.token.create({
     data: {
       id: "main-token",

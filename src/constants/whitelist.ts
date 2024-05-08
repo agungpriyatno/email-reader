@@ -14,7 +14,9 @@ const WHITE_LIST = [
   "A new device is using your account",
   "Your password has been changed",
   "Sandi sudah diubah ",
-  "Netflix: Kode masukmu"
+  "Netflix: Kode masukmu",
+  "Penting: Cara mengonfirmasi perangkat Netflix-mu",
+  "Important: How to update your Netflix Household",
 ];
 
 export { WHITE_LIST };

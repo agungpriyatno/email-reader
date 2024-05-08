@@ -109,7 +109,6 @@ const DashboardTable = ({}: DashboardTableProps) => {
               <TableRow>
                 <TableHead className="w-[100px]">No</TableHead>
                 <TableHead>Client Name</TableHead>
-                <TableHead>Client Email</TableHead>
                 <TableHead>Subcription</TableHead>
                 <TableHead>Expired Date</TableHead>
                 <TableHead>Action</TableHead>
@@ -121,7 +120,6 @@ const DashboardTable = ({}: DashboardTableProps) => {
                   <TableRow key={item.clientId + i}>
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{item.client.name}</TableCell>
-                    <TableCell>{item.client.email}</TableCell>
                     <TableCell>{item.imap.user}</TableCell>
                     <TableCell
                       className={cn({

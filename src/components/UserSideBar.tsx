@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import {
+  FilterIcon,
   HomeIcon,
   KeyRoundIcon,
   MailIcon,
@@ -34,6 +35,11 @@ export const MENU = [
     name: "Imap Management",
     path: "/backoffice/imaps",
     icon: <MailIcon className="h-5 w-5" />,
+  },
+  {
+    name: "Filter Management",
+    path: "/backoffice/filter",
+    icon: <FilterIcon className="h-5 w-5" />,
   },
   {
     name: "Update Password",

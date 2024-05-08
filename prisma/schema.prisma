@@ -67,3 +67,12 @@ model Token {
 
   @@map("tokens")
 }
+
+model Filter {
+  id        String   @id @default(cuid())
+  name      String   @db.Text
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("filters")
+}

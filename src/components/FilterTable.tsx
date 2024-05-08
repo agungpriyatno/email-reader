@@ -17,43 +17,43 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { clientImapFindMany } from "@/lib/actions/clientImapAction";
-import { Imap } from "@prisma/client";
+import { findManyFilter } from "@/lib/actions/filterAction";
+import { Filter, Imap } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  Edit2Icon,
   PlusIcon,
 } from "lucide-react";
 import { useState } from "react";
+import { z } from "zod";
 import { ClientImapCreate } from "./ClientImapCreate";
 import { ClientImapDelete } from "./ClientImapDelete";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { ClientImapUpdate } from "./ClientImapUpdate";
-import { cn } from "@/lib/utils";
+import { FilterCreate } from "./FilterCreate";
+import { FilterUpdate } from "./FilterUpdate";
+import { FilterDelete } from "./FilterDelete";
 
 type TImap = Imap & { expiredTime: Date };
 
-type ClientImapTableProps = {
-  id: string;
+type FilterTableProps = {
   initial: {
-    data: TImap[];
+    data: Filter[];
     currentPage: number;
     totalPage: number;
   };
 };
 
-const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
+const FilterTable = ({ initial }: FilterTableProps) => {
   const [take, setTake] = useState(15);
   const [page, setPage] = useState(initial.currentPage);
   const [search, setSearch] = useState<string>("");
 
   const fetcher = async () => {
-    const data = await clientImapFindMany(id, {
+    const data = await findManyFilter({
       page,
       take,
       search,
@@ -63,11 +63,11 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
   };
 
   const { data, refetch, isLoading, isError } = useQuery<{
-    data: TImap[];
+    data: Filter[];
     currentPage: number;
     totalPage: number;
   }>({
-    queryKey: ["client-imaps"],
+    queryKey: ["filters"],
     queryFn: fetcher,
     refetchInterval: 5000,
     initialData: initial,
@@ -91,14 +91,14 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
     <Card>
       <CardHeader>
         <div className="flex w-full justify-between place-items-center">
-          <CardTitle>Client Subcription</CardTitle>
+          <CardTitle>Filters</CardTitle>
           <div className="flex gap-3">
             <Input placeholder="Search" onChange={onChange} />
-            <ClientImapCreate id={id} onActionSuccess={refetch}>
+            <FilterCreate onActionSuccess={refetch}>
               <Button size={"icon"} className=" shrink-0">
                 <PlusIcon />
               </Button>
-            </ClientImapCreate>
+            </FilterCreate>
           </div>
         </div>
       </CardHeader>
@@ -109,8 +109,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">No</TableHead>
-              <TableHead>User</TableHead>
-              <TableHead>ExpiredAt</TableHead>
+              <TableHead>Subject</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -119,28 +118,19 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
               return (
                 <TableRow key={item.id}>
                   <TableCell>{i + 1}</TableCell>
-                  <TableCell>{item.user}</TableCell>
-                  <TableCell
-                    className={cn({
-                      "text-red-500": new Date() > item.expiredTime,
-                    })}
-                  >
-                    {item.expiredTime.toDateString()}
-                  </TableCell>
+                  <TableCell>{item.name}</TableCell>
                   <TableCell className=" flex space-x-3 gap-2">
-                    <ClientImapUpdate
-                      imapId={item.id}
-                      clientId={id}
-                      data={item.expiredTime}
+                    <FilterUpdate
+                      id={item.id}
+                      data={item.name}
                       onActionSuccess={refetch}
                     >
                       <Button>Edit</Button>
-                    </ClientImapUpdate>
-                    <ClientImapDelete
-                      clientId={id}
-                      imapId={item.id}
+                    </FilterUpdate>
+                    <FilterDelete
+                      id={item.id}
                       onActionSuccess={refetch}
-                    />
+                    ></FilterDelete>
                   </TableCell>
                 </TableRow>
               );
@@ -191,4 +181,4 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
   );
 };
 
-export { ClientImapTable };
+export { FilterTable };
