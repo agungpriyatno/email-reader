@@ -98,11 +98,6 @@ const DashboardTable = ({}: DashboardTableProps) => {
             <CardTitle>Client</CardTitle>
             <div className="flex gap-3">
               <Input placeholder="Search" value={search} onChange={onChange} />
-              <UserCreateUpdate onActionSuccess={refetch}>
-                <Button size={"icon"} className=" shrink-0">
-                  <PlusIcon />
-                </Button>
-              </UserCreateUpdate>
             </div>
           </div>
         </CardHeader>
