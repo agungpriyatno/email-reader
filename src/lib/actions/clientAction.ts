@@ -27,7 +27,13 @@ const clientFindMany = async ({
 }) => {
   const skip = (page - 1) * take;
   const data = await clientRepo.findMany({ take, skip, search });
-  const total = await clientRepo.count();
+  const total = await clientRepo.count({
+    OR: [
+      { id: { contains: search } },
+      { name: { contains: search } },
+      { email: { contains: search } },
+    ],
+  });
   const totalPage = Math.ceil(total / take);
   return { data, total, totalPage, currentPage: page };
 };

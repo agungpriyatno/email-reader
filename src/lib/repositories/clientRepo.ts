@@ -2,8 +2,8 @@ import "only-server";
 import db from "../db";
 import { Prisma } from "@prisma/client";
 
-const count = () => {
-  return db.client.count();
+const count = (where?: Prisma.ClientWhereInput) => {
+  return db.client.count({ where });
 };
 
 const find = (key: string) => {
@@ -25,7 +25,7 @@ const findMany = ({
     take,
     skip,
     orderBy: {
-      name: "asc"
+      name: "asc",
     },
     include: {
       _count: {

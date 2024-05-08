@@ -45,7 +45,14 @@ const clientImapFindMany = async (
 ) => {
   const skip = (page - 1) * take;
   const resp = await clientImapRepo.findManyEmail(id, { take, skip, search });
-  const total = await clientImapRepo.count(id);
+  const total = await clientImapRepo.count({
+    AND: [
+      { clientId: id },
+      {
+        OR: [{ imap: { user: { contains: search } } }],
+      },
+    ],
+  });
   const totalPage = Math.ceil(total / take);
   const data = resp.map(({ expiredTime, imap }) => {
     return { expiredTime, ...imap };
@@ -67,7 +74,21 @@ const imapClientFindMany = async (
 ) => {
   const skip = (page - 1) * take;
   const resp = await clientImapRepo.findManyImap(id, { take, skip, search });
-  const total = await clientImapRepo.count(id);
+  const total = await clientImapRepo.count({
+    AND: [
+      { imapId: id },
+      {
+        OR: [
+          {
+            client: {
+              name: { contains: search },
+              email: { contains: search },
+            },
+          },
+        ],
+      },
+    ],
+  });
   const totalPage = Math.ceil(total / take);
   const data = resp.map(({ expiredTime, client }) => {
     return { expiredTime, ...client };
@@ -94,7 +115,14 @@ const clientImapFindManySession = async (
     skip,
     search,
   });
-  const total = await clientImapRepo.count(user.data.id);
+  const total = await clientImapRepo.count({
+    AND: [
+      { clientId: user.data.id, expiredTime: { gte: new Date() } },
+      {
+        OR: [{ imap: { user: { contains: search } } }],
+      },
+    ],
+  });
   const totalPage = Math.ceil(total / take);
   const data = resp.map(({ expiredTime, imap }) => {
     return { expiredTime, ...imap };
@@ -140,7 +168,9 @@ const clientImapFindManyID = async (
     skip,
     search,
   });
-  const total = await clientImapRepo.count(id);
+  const total = await clientImapRepo.count({
+    OR: [{ imap: { user: { contains: search } } }],
+  });
   const totalPage = Math.ceil(total / take);
   const filter = resp.filter((item) => {
     if (item.imap.user === "muscle@shinki.id") {
@@ -163,5 +193,5 @@ export {
   clientImapFindManySession,
   clientImapFindManyID,
   clientImapFindManyNotID,
-  imapClientFindMany
+  imapClientFindMany,
 };

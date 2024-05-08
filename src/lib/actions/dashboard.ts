@@ -27,7 +27,15 @@ const findManyClient = async ({ page, take, search }: TQuery) => {
       ],
     },
   });
-  const total = await db.clientImap.count();
+  const total = await db.clientImap.count({
+    where: {
+      OR: [
+        { client: { name: { contains: search } } },
+        { client: { email: { contains: search } } },
+        { imap: { user: { contains: search } } },
+      ],
+    },
+  });
   const totalPage = Math.ceil(total / take);
   return { data, total, totalPage, currentPage: page };
 };
@@ -71,7 +79,20 @@ const findManyImapClient = async (
       ],
     },
   });
-  const total = await db.clientImap.count();
+  const total = await db.imap.count({
+    where: {
+      AND: [
+        {
+          NOT: blacklist.map(({ imapId }) => {
+            return { id: imapId };
+          }),
+        },
+        {
+          OR: [{ user: { contains: search } }],
+        },
+      ],
+    },
+  });
   const totalPage = Math.ceil(total / take);
   return { data, total, totalPage, currentPage: page };
 };

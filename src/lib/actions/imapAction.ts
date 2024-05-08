@@ -25,7 +25,7 @@ const imapFindMany = async ({
 }) => {
   const skip = (page - 1) * take;
   const data = await imapRepo.findMany({ take, skip, search });
-  const total = await imapRepo.count();
+  const total = await imapRepo.count({OR: [{ id: { contains: search } }, { user: { contains: search } }],});
   const totalPage = Math.ceil(total / take);
   return { data, total, totalPage, currentPage: page };
 };
@@ -44,7 +44,13 @@ const imapFindManyWithout = async (
 ) => {
   const skip = (page - 1) * take;
   const data = await imapRepo.findManyWithout(userId, { take, skip, search });
-  const total = await imapRepo.count();
+  const total = await imapRepo.count({
+    clients: {
+      some: {
+        clientId: "helo",
+      },
+    },
+  });
   const totalPage = Math.ceil(total / take);
   return { data, total, totalPage, currentPage: page };
 };

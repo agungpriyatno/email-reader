@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import "only-server";
 import db from "../db";
 
-const count = () => db.imap.count();
+const count = (where: Prisma.ImapWhereInput) => db.imap.count({ where });
 type D = Prisma.ClientImapListRelationFilter;
 const find = (key: string) => {
   return db.imap.findUnique({ where: { id: key } });

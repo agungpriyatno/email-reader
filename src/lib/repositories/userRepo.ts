@@ -1,9 +1,9 @@
 import "only-server";
-import db from "../db";
 import { Prisma } from "@prisma/client";
+import db from "../db";
 
-const count = () => {
-  return db.user.count();
+const count = (where?: Prisma.UserWhereInput) => {
+  return db.user.count({where});
 };
 
 const find = (key: string) => {

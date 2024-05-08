@@ -5,8 +5,8 @@ const createMany = (data: Prisma.ClientImapCreateManyInput[]) => {
   return db.clientImap.createMany({ data });
 };
 
-const count = (id: string) => {
-  return db.clientImap.count({ where: { clientId: id } });
+const count = (where?: Prisma.ClientImapWhereInput) => {
+  return db.clientImap.count({ where });
 };
 
 const remove = (clientId: string, imapId: string) => {

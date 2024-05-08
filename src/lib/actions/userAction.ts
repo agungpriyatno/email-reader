@@ -10,7 +10,6 @@ import { revalidatePath } from "next/cache";
 const createSchema = userSchema.create;
 const updateSchema = userSchema.update;
 
-
 const userFind = async (id: string) => {
   const data = await userRepo.find(id);
   return { data };
@@ -27,8 +26,14 @@ const userFindMany = async ({
 }) => {
   const skip = (page - 1) * take;
   const data = await userRepo.findMany({ take, skip, search });
-  const total = await userRepo.count();  
-  const totalPage = Math.ceil(total / take)
+  const total = await userRepo.count({
+    OR: [
+      { id: { contains: search } },
+      { name: { contains: search } },
+      { email: { contains: search } },
+    ],
+  });
+  const totalPage = Math.ceil(total / take);
   return { data, total, totalPage, currentPage: page };
 };
 
