@@ -34,6 +34,7 @@ import { ClientImapDelete } from "./ClientImapDelete";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { ClientImapUpdate } from "./ClientImapUpdate";
+import { cn } from "@/lib/utils";
 
 type TImap = Imap & { expiredTime: Date };
 
@@ -58,7 +59,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
       search,
     });
 
-    return data
+    return data;
   };
 
   const { data, refetch, isLoading, isError } = useQuery<{
@@ -74,7 +75,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value);
-    setPage(1)
+    setPage(1);
     refetch();
   };
 
@@ -119,12 +120,21 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
                 <TableRow key={item.id}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>{item.user}</TableCell>
-                  <TableCell>{item.expiredTime.toDateString()}</TableCell>
+                  <TableCell
+                    className={cn({
+                      "text-red-500": new Date() > item.expiredTime,
+                    })}
+                  >
+                    {item.expiredTime.toDateString()}
+                  </TableCell>
                   <TableCell className=" flex space-x-3 gap-2">
-                    <ClientImapUpdate imapId={item.id} clientId={id} data={item.expiredTime} onActionSuccess={refetch}>
-                      <Button size={"icon"}>
-                        Edit
-                      </Button>
+                    <ClientImapUpdate
+                      imapId={item.id}
+                      clientId={id}
+                      data={item.expiredTime}
+                      onActionSuccess={refetch}
+                    >
+                      <Button size={"icon"}>Edit</Button>
                     </ClientImapUpdate>
                     <ClientImapDelete
                       clientId={id}

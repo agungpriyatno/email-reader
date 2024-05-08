@@ -12,7 +12,7 @@ const ClientAuthProvider = ({ children }: ClientAuthProviderProps) => {
 
   useEffect(() => {
     if (!localStorage.getItem("client_session")) {
-      router.push("/backoffice/signin");
+      router.push("/signin");
     }
   });
 
