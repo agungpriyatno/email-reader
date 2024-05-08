@@ -44,7 +44,7 @@ const clientImapFindMany = async (
   }
 ) => {
   const skip = (page - 1) * take;
-  const resp = await clientImapRepo.findMany(id, { take, skip, search });
+  const resp = await clientImapRepo.findManyEmail(id, { take, skip, search });
   const total = await clientImapRepo.count(id);
   const totalPage = Math.ceil(total / take);
   const data = resp.map(({ expiredTime, imap }) => {

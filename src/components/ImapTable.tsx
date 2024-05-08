@@ -68,7 +68,7 @@ const ImapTable = ({ initial }: ImapTableProps) => {
     currentPage: number;
     totalPage: number;
   }>({
-    queryKey: ["clients", page],
+    queryKey: ["clients", page, search],
     queryFn: fetcher,
     refetchInterval: 5000,
     initialData: initial,

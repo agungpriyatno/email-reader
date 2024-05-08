@@ -59,7 +59,7 @@ const DashboardTable = ({}: DashboardTableProps) => {
     currentPage: number;
     totalPage: number;
   }>({
-    queryKey: ["dashboard"],
+    queryKey: ["dashboardss", page, search],
     queryFn: fetcher,
     refetchInterval: 5000,
     initialData: {

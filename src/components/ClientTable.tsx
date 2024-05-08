@@ -66,12 +66,12 @@ const ClientTable = ({ initial }: ClientTableProps) => {
     });
   };
 
-  const { data, refetch, isLoading, isError } = useQuery<{
+  const { data, refetch, isLoading, isFetching } = useQuery<{
     data: TData[];
     currentPage: number;
     totalPage: number;
   }>({
-    queryKey: ["clients"],
+    queryKey: ["clients", page, search],
     queryFn: fetcher,
     refetchInterval: 5000,
     initialData: initial,
@@ -83,13 +83,15 @@ const ClientTable = ({ initial }: ClientTableProps) => {
     refetch();
   };
 
-  const onChangePage = (action: "first" | "previous" | "next" | "last") => {
-    if (action === "first") setPage(1);
-    if (action === "previous") setPage(page - 1);
-    if (action === "next") setPage(page + 1);
-    if (action === "last") setPage(data.totalPage);
+  const onChangePage = async (action: "first" | "previous" | "next" | "last") => {
+    if (!isFetching) {
+      if (action === "first") setPage(1);
+      if (action === "previous") setPage(page - 1);
+      if (action === "next") setPage(page + 1);
+      if (action === "last") setPage(data.totalPage);
+    }
 
-    refetch();
+    await refetch();
   };
 
   return (
@@ -154,7 +156,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
             <Button
               size={"icon"}
               className="shrink-0"
-              disabled={data.currentPage <= 1}
+              disabled={data.currentPage <= 1 && !isFetching}
               onClick={() => onChangePage("first")}
             >
               <ChevronsLeft />
@@ -162,7 +164,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
             <Button
               size={"icon"}
               className="shrink-0"
-              disabled={data.currentPage <= 1}
+              disabled={data.currentPage <= 1 && !isFetching}
               onClick={() => onChangePage("previous")}
             >
               <ChevronLeft />
@@ -173,7 +175,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
             <Button
               size={"icon"}
               className="shrink-0"
-              disabled={data.totalPage <= data.currentPage}
+              disabled={data.totalPage <= data.currentPage && !isFetching}
               onClick={() => onChangePage("next")}
             >
               <ChevronRight />
@@ -181,7 +183,7 @@ const ClientTable = ({ initial }: ClientTableProps) => {
             <Button
               size={"icon"}
               className="shrink-0"
-              disabled={data.totalPage <= data.currentPage}
+              disabled={data.totalPage <= data.currentPage && !isFetching}
               onClick={() => onChangePage("last")}
             >
               <ChevronsRight />

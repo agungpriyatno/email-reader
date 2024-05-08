@@ -28,14 +28,11 @@ import {
   PlusIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { z } from "zod";
-import { ClientImapCreate } from "./ClientImapCreate";
-import { ClientImapDelete } from "./ClientImapDelete";
+import { FilterCreate } from "./FilterCreate";
+import { FilterDelete } from "./FilterDelete";
+import { FilterUpdate } from "./FilterUpdate";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { FilterCreate } from "./FilterCreate";
-import { FilterUpdate } from "./FilterUpdate";
-import { FilterDelete } from "./FilterDelete";
 
 type TImap = Imap & { expiredTime: Date };
 
@@ -67,7 +64,7 @@ const FilterTable = ({ initial }: FilterTableProps) => {
     currentPage: number;
     totalPage: number;
   }>({
-    queryKey: ["filters"],
+    queryKey: ["filters", page, search],
     queryFn: fetcher,
     refetchInterval: 5000,
     initialData: initial,

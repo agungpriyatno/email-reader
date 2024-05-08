@@ -62,7 +62,7 @@ const UserTable = ({ initial }: UserTableProps) => {
     currentPage: number;
     totalPage: number;
   }>({
-    queryKey: ["users"],
+    queryKey: ["users", page, search],
     queryFn: fetcher,
     refetchInterval: 5000,
     initialData: initial,

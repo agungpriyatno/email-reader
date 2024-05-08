@@ -67,7 +67,7 @@ const ClientImapTable = ({ id, initial }: ClientImapTableProps) => {
     currentPage: number;
     totalPage: number;
   }>({
-    queryKey: ["client-imaps"],
+    queryKey: ["client-imaps", page, search],
     queryFn: fetcher,
     refetchInterval: 5000,
     initialData: initial,

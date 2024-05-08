@@ -45,6 +45,36 @@ const findMany = (
   });
 };
 
+const findManyEmail = (
+  id: string,
+  {
+    take,
+    skip,
+    search,
+  }: {
+    take: number;
+    skip: number;
+    search: string;
+  }
+) => {
+  return db.clientImap.findMany({
+    take,
+    skip,
+    orderBy: {
+      imap: { user: "asc" },
+    },
+    include: { imap: true },
+    where: {
+      AND: [
+        { clientId: id },
+        {
+          OR: [{ imap: { user: { contains: search } } }],
+        },
+      ],
+    },
+  });
+};
+
 const findManyImap = (
   id: string,
   {
@@ -141,7 +171,8 @@ const clientImapRepo = {
   remove,
   count,
   findManyNotID,
-  findManyImap
+  findManyImap,
+  findManyEmail,
 };
 
 export default clientImapRepo;
