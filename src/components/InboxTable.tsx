@@ -38,7 +38,7 @@ const InboxTable = ({ imap }: InboxTableProps) => {
   };
 
   const { data, refetch, isFetching, isError } = useQuery<TMessage[]>({
-    queryKey: ["inbox"],
+    queryKey: ["inbox", imap?.user],
     queryFn: fetcher,
     refetchInterval: 10000,
     initialData: [],
