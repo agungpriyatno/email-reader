@@ -49,7 +49,7 @@ const clientImapFindMany = async (
     AND: [
       { clientId: id },
       {
-        OR: [{ imap: { user: { contains: search } } }],
+        OR: [{ imap: { user: { contains: search, mode: "insensitive" } } }],
       },
     ],
   });
@@ -81,8 +81,8 @@ const imapClientFindMany = async (
         OR: [
           {
             client: {
-              name: { contains: search },
-              email: { contains: search },
+              name: { contains: search, mode: "insensitive" },
+              email: { contains: search, mode: "insensitive" },
             },
           },
         ],
@@ -119,7 +119,7 @@ const clientImapFindManySession = async (
     AND: [
       { clientId: user.data.id, expiredTime: { gte: new Date() } },
       {
-        OR: [{ imap: { user: { contains: search } } }],
+        OR: [{ imap: { user: { contains: search, mode: "insensitive" } } }],
       },
     ],
   });
@@ -142,7 +142,7 @@ const clientImapFindManyNotID = async ({
     where: {
       AND: [
         { NOT: { clients: { some: { clientId: id } } } },
-        { OR: [{ user: { contains: search } }] },
+        { OR: [{ user: { contains: search, mode: "insensitive" } }] },
       ],
     },
   });
@@ -169,7 +169,7 @@ const clientImapFindManyID = async (
     search,
   });
   const total = await clientImapRepo.count({
-    OR: [{ imap: { user: { contains: search } } }],
+    OR: [{ imap: { user: { contains: search, mode: "insensitive" } } }],
   });
   const totalPage = Math.ceil(total / take);
   const filter = resp.filter((item) => {

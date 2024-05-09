@@ -38,7 +38,7 @@ const findMany = (
       AND: [
         { clientId: id },
         {
-          OR: [{ imap: { user: { contains: search } } }],
+          OR: [{ imap: { user: { contains: search, mode: "insensitive" } } }],
         },
       ],
     },
@@ -68,7 +68,7 @@ const findManyEmail = (
       AND: [
         { clientId: id },
         {
-          OR: [{ imap: { user: { contains: search } } }],
+          OR: [{ imap: { user: { contains: search, mode: "insensitive" } } }],
         },
       ],
     },
@@ -101,8 +101,8 @@ const findManyImap = (
           OR: [
             {
               client: {
-                name: { contains: search },
-                email: { contains: search },
+                name: { contains: search, mode: "insensitive" },
+                email: { contains: search, mode: "insensitive" },
               },
             },
           ],
@@ -132,7 +132,7 @@ const findManyNotID = (
     },
     include: { imap: true },
     where: {
-      OR: [{ imap: { user: { contains: search } } }],
+      OR: [{ imap: { user: { contains: search, mode: "insensitive" } } }],
     },
   });
 };
@@ -158,7 +158,7 @@ const findManyExpired = (
       AND: [
         { clientId: id, expiredTime: { gte: today } },
         {
-          OR: [{ imap: { user: { contains: search } } }],
+          OR: [{ imap: { user: { contains: search, mode: "insensitive" } } }],
         },
       ],
     },

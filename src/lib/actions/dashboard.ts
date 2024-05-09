@@ -21,18 +21,18 @@ const findManyClient = async ({ page, take, search }: TQuery) => {
     },
     where: {
       OR: [
-        { client: { name: { contains: search } } },
-        { client: { email: { contains: search } } },
-        { imap: { user: { contains: search } } },
+        { client: { name: { contains: search, mode: "insensitive" } } },
+        { client: { email: { contains: search, mode: "insensitive" } } },
+        { imap: { user: { contains: search, mode: "insensitive" } } },
       ],
     },
   });
   const total = await db.clientImap.count({
     where: {
       OR: [
-        { client: { name: { contains: search } } },
-        { client: { email: { contains: search } } },
-        { imap: { user: { contains: search } } },
+        { client: { name: { contains: search, mode: "insensitive" } } },
+        { client: { email: { contains: search, mode: "insensitive" } } },
+        { imap: { user: { contains: search, mode: "insensitive" } } },
       ],
     },
   });
@@ -74,7 +74,7 @@ const findManyImapClient = async (
           }),
         },
         {
-          OR: [{ user: { contains: search } }],
+          OR: [{ user: { contains: search, mode: "insensitive" } }],
         },
       ],
     },
@@ -88,7 +88,7 @@ const findManyImapClient = async (
           }),
         },
         {
-          OR: [{ user: { contains: search } }],
+          OR: [{ user: { contains: search, mode: "insensitive" } }],
         },
       ],
     },

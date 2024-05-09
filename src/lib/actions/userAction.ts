@@ -28,9 +28,9 @@ const userFindMany = async ({
   const data = await userRepo.findMany({ take, skip, search });
   const total = await userRepo.count({
     OR: [
-      { id: { contains: search } },
-      { name: { contains: search } },
-      { email: { contains: search } },
+      { id: { contains: search, mode: "insensitive" } },
+      { name: { contains: search, mode: "insensitive" } },
+      { email: { contains: search, mode: "insensitive" } },
     ],
   });
   const totalPage = Math.ceil(total / take);

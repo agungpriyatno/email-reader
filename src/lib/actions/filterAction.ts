@@ -13,10 +13,10 @@ const findManyFilter = async ({ page, take, search }: TFindManyFilter) => {
     take,
     skip,
     orderBy: { createdAt: "desc" },
-    where: { name: { contains: search } },
+    where: { name: { contains: search, mode: "insensitive" } },
   });
   const total = await db.filter.count({
-    where: { name: { contains: search } },
+    where: { name: { contains: search, mode: "insensitive" } },
   });
   const totalPage = Math.ceil(total / take);
   return { data, total, totalPage, currentPage: page };

@@ -28,7 +28,7 @@ const findMany = ({
       },
     },
     where: {
-      OR: [{ id: { contains: search } }, { user: { contains: search } }],
+      OR: [{ id: { contains: search, mode: "insensitive" } }, { user: { contains: search, mode: "insensitive" } }],
     },
   });
 };
@@ -70,7 +70,7 @@ const findManyWithout = (
       //       },
       //     },
       //   },
-      //   { OR: [{ id: { contains: search } }, { user: { contains: search } }] },
+      //   { OR: [{ id: { contains: search, mode: "insensitive" } }, { user: { contains: search, mode: "insensitive" } }] },
       // ],
     },
   });
