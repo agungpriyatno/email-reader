@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import "./globals.css";
 import AppProvider from "@/components/AppProvider";
 
-const inter = Inter({ subsets: ["latin"], display: "swap", adjustFontFallback: false });
+// const inter = Inter({ subsets: ["latin"], display: "swap", adjustFontFallback: false });
 
 export const metadata: Metadata = {
   title: "Media ID Store",
@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={""}>
         <AppProvider>{children}</AppProvider>
       </body>
     </html>
