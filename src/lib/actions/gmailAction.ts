@@ -34,8 +34,6 @@ const findMessages = async (to?: string) => {
     q: `from:(info@account.netflix.com) ${to ? toQuery : ""}`,
   });
 
-  await redis.connect();
-
   if (data.messages)
     for (const item of data.messages) {
       if (item.id) {
@@ -71,9 +69,12 @@ const findMessages = async (to?: string) => {
               body,
             };
             messages.push(message);
-            await redis.set(item.id, JSON.stringify(message), {
-              EX: 60 * 60 * 24 * 7,
-            });
+            await redis.set(
+              item.id,
+              JSON.stringify(message),
+              "EX",
+              60 * 60 * 24 * 3
+            );
           }
         } else {
           const { date, ...others } = JSON.parse(cached);
@@ -83,8 +84,6 @@ const findMessages = async (to?: string) => {
         }
       }
     }
-
-  await redis.disconnect();
 
   return messages;
 };

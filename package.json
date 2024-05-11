@@ -30,6 +30,7 @@
     "dotenv-cli": "^7.4.1",
     "gmail-api-parse-message": "^2.1.2",
     "googleapis": "^135.0.0",
+    "ioredis": "^5.4.1",
     "jose": "^5.2.4",
     "lucide-react": "^0.375.0",
     "mailparser": "^3.7.1",
