@@ -85,8 +85,6 @@ const DashboardTable = ({}: DashboardTableProps) => {
   };
 
   const onRefetch = async () => {
-    setPage(1);
-    setSearch("");
     await refetch();
   };
 
