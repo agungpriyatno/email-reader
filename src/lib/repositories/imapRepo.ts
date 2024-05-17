@@ -28,7 +28,13 @@ const findMany = ({
       },
     },
     where: {
-      OR: [{ id: { contains: search, mode: "insensitive" } }, { user: { contains: search, mode: "insensitive" } }],
+      OR: [
+        { id: { contains: search, mode: "insensitive" } },
+        { user: { contains: search, mode: "insensitive" } },
+      ],
+    },
+    orderBy: {
+      user: "asc",
     },
   });
 };
