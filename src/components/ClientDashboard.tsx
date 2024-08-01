@@ -34,6 +34,7 @@ import { TableLoading } from "./TableLoading";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import Link from "next/link";
+import DataTable from 'react-data-table-component';
 
 type TImap = Imap & {expiredTime: Date}
 
@@ -91,6 +92,36 @@ const ClientDashboard = () => {
       }
     }
   }
+  const columns = [
+    {
+        name: 'No',
+        id: 1,
+        selector: (row,i) => i +1,
+    },
+    {
+        name: 'User',
+        id: 3,
+        selector: row => row.imap.user,
+        sortable: true,
+        filterable: true,
+    },
+    {
+        name: 'ExpiredAt',
+        selector: row => row.expiredTime.toDateString(),
+        sortable: true,
+        filterable: true,
+    },
+    {
+        name: 'Action',
+        cell: row => (
+          <Button asChild size={"icon"}>
+          <Link href={`/dashboard/${item.id}`}>
+            View
+          </Link>
+        </Button>
+        ),
+    },
+  ];
 
   return (
     <Card>
@@ -103,35 +134,11 @@ const ClientDashboard = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <Table>
-          {data?.data?.length == 0 && <TableCaption>No Data.</TableCaption>}
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">No</TableHead>
-              <TableHead>User</TableHead>
-              <TableHead>ExpiredAt</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.data?.map((item, i) => {
-              return (
-                <TableRow key={item.id}>
-                  <TableCell>{i + 1}</TableCell>
-                  <TableCell>{item.user}</TableCell>
-                  <TableCell>{item.expiredTime.toDateString()}</TableCell>
-                   <TableCell className=" flex space-x-3">
-                    <Button asChild size={"icon"}>
-                      <Link href={`/dashboard/${item.id}`}>
-                        View
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+      <DataTable
+            columns={columns}
+            data={data.data}
+            defaultSortFieldId={2} pagination
+        />
       </CardContent>
       <CardFooter>
         <div className="flex gap-3">

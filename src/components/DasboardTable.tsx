@@ -36,6 +36,8 @@ import { DashboardImapUpdate } from "./DashboardImapUpdate";
 import { cn } from "@/lib/utils";
 import { TableLoading } from "./TableLoading";
 
+import DataTable from 'react-data-table-component';
+
 type TData = ClientImap & { client: Client; imap: Imap };
 
 type DashboardTableProps = {};
@@ -88,6 +90,59 @@ const DashboardTable = ({}: DashboardTableProps) => {
     await refetch();
   };
 
+  const columns = [
+    {
+        name: 'No',
+        id: 1,
+        selector: (row,i) => i +1,
+    },
+    {
+        name: 'Client Name',
+        id: 2,
+        selector: row => row.client.name,
+        sortable: true,
+        filterable: true,
+    },
+    {
+        name: 'Subcription',
+        id: 3,
+        selector: row => row.imap.user,
+        sortable: true,
+        filterable: true,
+    },
+    {
+        name: 'Expired Date',
+        selector: row => row.expiredTime.toDateString(),
+        sortable: true,
+        filterable: true,
+    },
+    {
+        name: 'Update Expired',
+        cell: row => (
+          <ClientImapUpdate
+            data={row.expiredTime}
+            clientId={row.clientId}
+            imapId={row.imapId}
+            onActionSuccess={onRefetch}
+          >
+            <Button size={"default"}>Update Expired</Button>
+          </ClientImapUpdate>
+        ),
+    },
+    {
+        name: 'Update Subscription',
+        cell: row => (
+          <DashboardImapUpdate
+              clientId={row.clientId}
+              imapId={row.imapId}
+              onActionSuccess={onRefetch}
+            >
+              <Button size={"default"}>Update Subcription</Button>
+            </DashboardImapUpdate>
+        ),
+    },
+  ];
+
   return (
     <div>
       <Card>
@@ -100,54 +155,11 @@ const DashboardTable = ({}: DashboardTableProps) => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            {data?.data?.length == 0 && <TableCaption>No Data.</TableCaption>}
-            {isLoading && <TableCaption>Loading..</TableCaption>}
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">No</TableHead>
-                <TableHead>Client Name</TableHead>
-                <TableHead>Subcription</TableHead>
-                <TableHead>Expired Date</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.data?.map((item, i) => {
-                return (
-                  <TableRow key={item.clientId + i}>
-                    <TableCell>{i + 1}</TableCell>
-                    <TableCell>{item.client.name}</TableCell>
-                    <TableCell>{item.imap.user}</TableCell>
-                    <TableCell
-                      className={cn({
-                        "text-red-500": date > item.expiredTime,
-                      })}
-                    >
-                      {item.expiredTime.toDateString()}
-                    </TableCell>
-                    <TableCell className="flex space-x-3">
-                      <ClientImapUpdate
-                        data={item.expiredTime}
-                        clientId={item.clientId}
-                        imapId={item.imapId}
-                        onActionSuccess={onRefetch}
-                      >
-                        <Button size={"default"}>Update Expired</Button>
-                      </ClientImapUpdate>
-                      <DashboardImapUpdate
-                        clientId={item.clientId}
-                        imapId={item.imapId}
-                        onActionSuccess={onRefetch}
-                      >
-                        <Button size={"default"}>Update Subcription</Button>
-                      </DashboardImapUpdate>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+        <DataTable
+            columns={columns}
+            data={data.data}
+            defaultSortFieldId={2} pagination
+        />
         </CardContent>
         <CardFooter>
           <div className="flex gap-3">
